@@ -27,7 +27,7 @@ export default function Navbar() {
           <img
             src={logo}
             alt="Logo"
-            className="w-65 md:w-66 h-auto object-contain drop-shadow-2xl"
+            className="w-40 md:w-56 h-auto object-contain drop-shadow-2xl"
           />
         </div>
 

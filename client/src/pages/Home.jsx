@@ -1,9 +1,11 @@
-import React, { Suspense, lazy } from "react";
+import React, { Suspense, lazy, memo } from "react";
 
-// Lazy-loaded components
-const TopHeader = lazy(() => import("../components/TopHeader"));
-const Navbar = lazy(() => import("../components/Navbar"));
-const Hero = lazy(() => import("../components/Hero"));
+// 🚀 Critical components - load immediately
+import Navbar from "../components/Navbar";
+import Hero from "../components/Hero";
+import TopHeader from "../components/TopHeader";
+
+// 🎯 Lazy load non-critical components
 const About = lazy(() => import("./About"));
 const Services = lazy(() => import("./Services"));
 const Countries = lazy(() => import("./Countries"));
@@ -12,19 +14,54 @@ const Contact = lazy(() => import("./Contact"));
 const FAQ = lazy(() => import("./Faq"));
 const PremiumFooter = lazy(() => import("./PremiumFooter"));
 
-export default function Home() {
+// 🎨 Simple loading spinner
+const LoadingSpinner = memo(() => (
+  <div className="flex justify-center items-center py-12">
+    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-500"></div>
+  </div>
+));
+
+// 🚀 Optimized Home component
+const Home = memo(() => {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <>
+      {/* ⚡ Above-the-fold content - loads first */}
       <TopHeader />
       <Navbar />
       <Hero />
-      <About />
-      <Services />
-      <Countries />
-      <Blog />
-      <Contact />
-      <FAQ />
-      <PremiumFooter />
-    </Suspense>
+
+      {/* 🎯 Below-the-fold content - lazy loaded */}
+      <Suspense fallback={<LoadingSpinner />}>
+        <About />
+      </Suspense>
+
+      <Suspense fallback={<LoadingSpinner />}>
+        <Services />
+      </Suspense>
+
+      <Suspense fallback={<LoadingSpinner />}>
+        <Countries />
+      </Suspense>
+
+      <Suspense fallback={<LoadingSpinner />}>
+        <Blog />
+      </Suspense>
+
+      <Suspense fallback={<LoadingSpinner />}>
+        <Contact />
+      </Suspense>
+
+      <Suspense fallback={<LoadingSpinner />}>
+        <FAQ />
+      </Suspense>
+
+      <Suspense fallback={<LoadingSpinner />}>
+        <PremiumFooter />
+      </Suspense>
+    </>
   );
-}
+});
+
+Home.displayName = 'Home';
+
+export default Home;
