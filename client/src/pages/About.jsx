@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useState, useRef } from "react";
+import { motion, AnimatePresence, useInView, useMotionValue, useSpring } from "framer-motion";
 
 const stats = [
-  { number: "25+", label: "Years of Excellence", icon: "🏆", description: "Serving clients since 1999", color: "from-amber-400 to-orange-500" },
-  { number: "15,000+", label: "Visas Processed", icon: "📋", description: "Successfully approved applications", color: "from-blue-400 to-cyan-500" },
-  { number: "96%", label: "Success Rate", icon: "✅", description: "Industry-leading approval rate", color: "from-emerald-400 to-teal-500" },
-  { number: "50+", label: "Countries Served", icon: "🌍", description: "Global clientele", color: "from-violet-400 to-purple-500" },
-  { number: "24/7", label: "Client Support", icon: "📞", description: "Round-the-clock assistance", color: "from-rose-400 to-pink-500" },
-  { number: "500+", label: "Corporate Clients", icon: "🏢", description: "Trusted by businesses", color: "from-indigo-400 to-blue-500" }
+  { number: "18+", label: "Years of Excellence", icon: "🏆", description: "Serving clients since 2007", color: "from-amber-400 to-orange-500", targetValue: 18, suffix: "+" },
+  { number: "15,000+", label: "Visas Processed", icon: "📋", description: "Successfully approved applications", color: "from-blue-400 to-cyan-500", targetValue: 15000, suffix: "+" },
+  { number: "96%", label: "Success Rate", icon: "✅", description: "Industry-leading approval rate", color: "from-emerald-400 to-teal-500", targetValue: 96, suffix: "%" },
+  { number: "30+", label: "Countries Served", icon: "🌍", description: "Global clientele", color: "from-violet-400 to-purple-500", targetValue: 30, suffix: "+" },
+  { number: "24/7", label: "Client Support", icon: "📞", description: "Round-the-clock assistance", color: "from-rose-400 to-pink-500", targetValue: 24, suffix: "/7" },
+  { number: "500+", label: "Corporate Clients", icon: "🏢", description: "Trusted by businesses", color: "from-indigo-400 to-blue-500", targetValue: 500, suffix: "+" }
 ];
 
 const whyChooseUs = [
@@ -85,6 +85,46 @@ const whyChooseUs = [
   }
 ];
 
+// Counter component with count-up animation
+function AnimatedCounter({ targetValue, suffix, duration = 2 }) {
+  const ref = useRef();
+  const isInView = useInView(ref, { once: true, threshold: 0.3 });
+  
+  const motionValue = useMotionValue(0);
+  const springValue = useSpring(motionValue, {
+    duration: duration * 1000,
+    bounce: 0
+  });
+  
+  const [displayValue, setDisplayValue] = useState(0);
+
+  useEffect(() => {
+    if (isInView) {
+      motionValue.set(targetValue);
+    }
+  }, [isInView, motionValue, targetValue]);
+
+  useEffect(() => {
+    const unsubscribe = springValue.on('change', (latest) => {
+      setDisplayValue(Math.floor(latest));
+    });
+    return unsubscribe;
+  }, [springValue]);
+
+  const formatNumber = (num) => {
+    if (num >= 1000) {
+      return num.toLocaleString();
+    }
+    return num.toString();
+  };
+
+  return (
+    <span ref={ref} className="font-mono">
+      {formatNumber(displayValue)}{suffix}
+    </span>
+  );
+}
+
 export default function About() {
   const [hoveredStat, setHoveredStat] = useState(null);
   const [hoveredFeature, setHoveredFeature] = useState(null);
@@ -156,7 +196,7 @@ export default function About() {
         </motion.div>
       </section>
 
-      {/* Stats Section */}
+      {/* Stats Section with Count-Up Effect */}
       <section className="relative z-10 py-20 px-6 md:px-20">
         <motion.div 
           variants={containerVariants}
@@ -197,8 +237,12 @@ export default function About() {
                   <div className="text-4xl mb-4 transform group-hover:scale-110 transition-transform duration-300">
                     {stat.icon}
                   </div>
-                  <div className="text-3xl md:text-4xl font-black text-white mb-3 font-mono">
-                    {stat.number}
+                  <div className="text-3xl md:text-4xl font-black text-white mb-3">
+                    <AnimatedCounter 
+                      targetValue={stat.targetValue} 
+                      suffix={stat.suffix}
+                      duration={2.5}
+                    />
                   </div>
                   <div className="text-sm font-bold text-blue-300 mb-2 uppercase tracking-wider">
                     {stat.label}
@@ -249,7 +293,7 @@ export default function About() {
                       To provide <span className="text-blue-300 font-medium">exceptional immigration legal services</span> that transform lives and build bridges between dreams and reality. We believe every person deserves the opportunity to achieve their American dream through expert guidance, compassionate support, and unwavering dedication.
                     </p>
                     <p className="font-light">
-                      Since <span className="text-purple-300 font-medium">1999</span>, we've been committed to delivering personalized, results-driven immigration solutions that exceed expectations and create lasting positive impact in our clients' lives.
+                      Since <span className="text-purple-300 font-medium">2007</span>, we've been committed to delivering personalized, results-driven immigration solutions that exceed expectations and create lasting positive impact in our clients' lives.
                     </p>
                   </div>
                 </motion.div>

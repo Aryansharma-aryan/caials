@@ -1,11 +1,12 @@
 import React, { Suspense, lazy, memo } from "react";
 
-// 🚀 Critical components - load immediately
+// Critical components - load immediately
 import Navbar from "../components/Navbar";
-import Hero from "../components/Hero";
 import TopHeader from "../components/TopHeader";
+import Hero from "../components/Hero";
+import ConsultancyForm from "../Forms/ConsultancyForm";
 
-// 🎯 Lazy load non-critical components
+// Lazy load below-the-fold components
 const About = lazy(() => import("./About"));
 const Services = lazy(() => import("./Services"));
 const Countries = lazy(() => import("./Countries"));
@@ -14,54 +15,68 @@ const Contact = lazy(() => import("./Contact"));
 const FAQ = lazy(() => import("./Faq"));
 const PremiumFooter = lazy(() => import("./PremiumFooter"));
 
-// 🎨 Simple loading spinner
+// Loading Spinner Component
 const LoadingSpinner = memo(() => (
   <div className="flex justify-center items-center py-12">
     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-500"></div>
   </div>
 ));
 
-// 🚀 Optimized Home component
+// Main Home Component
 const Home = memo(() => {
   return (
-    <>
-      {/* ⚡ Above-the-fold content - loads first */}
-      <TopHeader />
-      <Navbar />
-      <Hero />
+    <div className="relative">
+      {/* Fixed Components - Absolutely positioned to avoid any wrapper backgrounds */}
+      <div className="fixed top-0 left-0 w-full z-50 pointer-events-none">
+        <div className="pointer-events-auto">
+          <TopHeader />
+        </div>
+        <div className="pointer-events-auto">
+          <Navbar />
+        </div>
+      </div>
 
-      {/* 🎯 Below-the-fold content - lazy loaded */}
-      <Suspense fallback={<LoadingSpinner />}>
-        <About />
-      </Suspense>
+      {/* Main content - No padding top since components are absolute */}
+      <main>
+        {/* Above-the-fold content */}
+        <Hero />
 
-      <Suspense fallback={<LoadingSpinner />}>
-        <Services />
-      </Suspense>
+        {/* Lazy-loaded sections */}
+        <Suspense fallback={<LoadingSpinner />}>
+          <About />
+        </Suspense>
 
-      <Suspense fallback={<LoadingSpinner />}>
-        <Countries />
-      </Suspense>
+        <Suspense fallback={<LoadingSpinner />}>
+          <Services />
+        </Suspense>
 
-      <Suspense fallback={<LoadingSpinner />}>
-        <Blog />
-      </Suspense>
+        <Suspense fallback={<LoadingSpinner />}>
+          <Countries />
+        </Suspense>
 
-      <Suspense fallback={<LoadingSpinner />}>
-        <Contact />
-      </Suspense>
+        <Suspense fallback={<LoadingSpinner />}>
+          <Blog />
+        </Suspense>
 
-      <Suspense fallback={<LoadingSpinner />}>
-        <FAQ />
-      </Suspense>
+        <Suspense fallback={<LoadingSpinner />}>
+          <ConsultancyForm />
+        </Suspense>
 
-      <Suspense fallback={<LoadingSpinner />}>
-        <PremiumFooter />
-      </Suspense>
-    </>
+        <Suspense fallback={<LoadingSpinner />}>
+          <Contact />
+        </Suspense>
+
+        <Suspense fallback={<LoadingSpinner />}>
+          <FAQ />
+        </Suspense>
+
+        <Suspense fallback={<LoadingSpinner />}>
+          <PremiumFooter />
+        </Suspense>
+      </main>
+    </div>
   );
 });
 
-Home.displayName = 'Home';
-
+Home.displayName = "Home";
 export default Home;

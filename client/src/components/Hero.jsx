@@ -1,4 +1,6 @@
 import { useEffect, useState, useCallback, useMemo } from "react";
+import { Link } from 'react-router-dom';
+
 import { motion, AnimatePresence } from "framer-motion";
 import { TypeAnimation } from "react-type-animation";
 import HeroImg1 from "../assets/HeroImg.png";
@@ -126,13 +128,14 @@ export default function Hero() {
           </p>
 
           <div className="mt-6 flex flex-wrap gap-4">
-            <button 
-              className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg shadow-lg font-semibold transition-colors duration-200"
-              // 🚀 Prevent button layout shifts
-              style={{ willChange: 'background-color' }}
-            >
-              Get Free Consultation
-            </button>
+           <Link
+  to="../consultancy"
+  className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg shadow-lg font-semibold transition-colors duration-200 inline-block text-center"
+  style={{ willChange: 'background-color' }}
+>
+  Get Free Consultation
+</Link>
+
             <button 
               className="border border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-black transition-all duration-200"
               style={{ willChange: 'background-color, color' }}

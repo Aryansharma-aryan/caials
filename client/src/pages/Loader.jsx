@@ -34,47 +34,24 @@ const Loader = ({ onLoadingComplete }) => {
       <img
         src={logo}
         alt="Logo"
-        className="w-90 mb-12 z-10 drop-shadow-xl animate-fade-in"
+        className="w-38 mb-8 z-10 drop-shadow-xl animate-fade-in"
       />
 
-      {/* 🌀 Circular Loader */}
-      <div className="relative w-30 h-30 z-10">
-        <svg className="w-40 h-40 transform -rotate-90" viewBox="0 0 160 160">
-       
-          <circle
-            cx="80"
-            cy="80"
-            r="65"
-            stroke="url(#orangePinkGradient)"
-            strokeWidth="8"
-            fill="transparent"
-            strokeLinecap="round"
-            strokeDasharray={`${2 * Math.PI * 65}`}
-            strokeDashoffset={`${2 * Math.PI * 65 * (1 - progress / 100)}`}
-            className="transition-all duration-300 ease-out"
-          />
-          <defs>
-            <linearGradient id="orangePinkGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#f472b6" />
-              <stop offset="100%" stopColor="#fb923c" />
-            </linearGradient>
-          </defs>
-        </svg>
-
-        {/* 💎 Inner Glass Circle */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-20 h-20 rounded-full bg-white/10 backdrop-blur-lg shadow-inner  animate-pulse" />
-        </div>
+      {/* 🍩 Doughnut Spinner */}
+      <div className="relative w-16 h-16 mb-4 z-10">
+        <div className="absolute inset-0 rounded-full border-4 border-t-transparent border-red-500 animate-spin"></div>
       </div>
 
-      {/* 📊 Progress Text */}
-      <div className="mt-10 text-white font-semibold text-2xl tracking-widest drop-shadow-md z-10">
-        {Math.round(progress)}%
+      {/* 📊 Progress Bar (Optional below spinner) */}
+      <div className="w-94 h-8 bg-white/20 rounded-full overflow-hidden z-10 shadow-inner">
+        <div
+          className="h-full bg-gradient-to-r from-yellow-300 via-red-500 to-orange-600 rounded-full transition-all duration-200"
+          style={{ width: `${progress}%` }}
+        ></div>
       </div>
 
-      {/* 🌐 Tagline */}
-      <div className="mt-2 text-white text-base sm:text-lg font-light tracking-wide z-10">
-        Loading your experience...
+      <div className="mt-4 text-sm font-medium tracking-wider text-white z-10 animate-pulse">
+        {Math.floor(progress)}%
       </div>
     </div>
   );
