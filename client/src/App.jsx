@@ -5,7 +5,7 @@ import Home from "./pages/Home";
 import Loader from "./pages/Loader";
 import ConsultancyForm from './Forms/ConsultancyForm';
 import AdminPanel from "./Admin/AdminPanel";
-import AdminLogin from "./components/AdminLogin";
+import AdminLogin from "./components/adminLogin";
 import ProtectedRoute from './components/ProtectedRoute';
 import PremiumFooter from "./pages/PremiumFooter"
 import Contact from "./pages/Contact";
