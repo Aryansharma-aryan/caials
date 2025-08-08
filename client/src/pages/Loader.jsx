@@ -13,7 +13,7 @@ const Loader = ({ onLoadingComplete }) => {
           setTimeout(() => {
             setIsVisible(false);
             if (onLoadingComplete) onLoadingComplete();
-          }, 500);
+          }, 300);
           return 100;
         }
         return Math.min(prev + Math.random() * 6 + 2, 100);

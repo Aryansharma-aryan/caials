@@ -30,10 +30,9 @@ const Home = memo(() => {
       <div className="fixed top-0 left-0 w-full z-50 pointer-events-none">
         <div className="pointer-events-auto">
           <TopHeader />
+          
         </div>
-        <div className="pointer-events-auto">
-          <Navbar />
-        </div>
+       
       </div>
 
       {/* Main content - No padding top since components are absolute */}

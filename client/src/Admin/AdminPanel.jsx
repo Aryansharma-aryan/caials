@@ -16,7 +16,7 @@ const AdminPanel = () => {
         return;
       }
 
-      const res = await axios.get("http://localhost:5000/api/getConsultation", {
+      const res = await axios.get("https://caials.onrender.com/api/getConsultation", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -37,7 +37,7 @@ const AdminPanel = () => {
       const token = localStorage.getItem("adminToken");
 
       await axios.put(
-        `http://localhost:5000/api/getConsultation/${id}/complete`,
+        `https://caials.onrender.com/api/getConsultation/${id}/complete`,
         { isCompleted: !current },
         {
           headers: {
