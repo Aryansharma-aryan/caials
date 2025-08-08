@@ -27,7 +27,7 @@ const handleSubmit = async (e) => {
       setIsSuccess(true);
 
       setTimeout(() => {
-        window.location.href = "/admin";
+        window.location.href = "/";
       }, 1500);
     } else {
       setError(data.message || "Invalid credentials. Please try again.");
