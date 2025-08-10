@@ -1,23 +1,9 @@
-# /robots.txt
-#
-# This file is used to provide instructions for search engine robots on how to crawl and index your site.
+# robots.txt
+# Rules for search engine crawlers
 
-# Allow all web crawlers to access all content on the site.
-# The `*` in User-agent means this rule applies to all robots.
+# Allow all web crawlers full access
 User-agent: *
 Allow: /
 
-# You can add specific rules for different bots if needed.
-# For example, to disallow a specific bot:
-# User-agent: BadBot
-# Disallow: /
-
-# You can also disallow specific directories or files.
-# For example, to prevent crawling of an admin directory:
-# Disallow: /admin/
-# Disallow: /private/
-
-# Sitemaps:
-# List the URL to your sitemap to help search engines discover all your pages.
-# Replace the URL with your actual sitemap location.
+# Sitemap location
 Sitemap: https://www.caials.com/sitemap.xml
