@@ -28,7 +28,6 @@ app.use(cors({
 }));
 
 
-<<<<<<< HEAD
 // CORS config to allow only your frontend origin
 app.use(cors({
   origin: 'https://www.caials.com',
@@ -36,8 +35,8 @@ app.use(cors({
   credentials: true,
 }));
 
-=======
->>>>>>> d03b8904 (Fix CORS and favicon issues)
+
+
 app.use(express.json());
 
 app.use("/api", consultRoute)
