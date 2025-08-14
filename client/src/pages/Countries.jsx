@@ -11,15 +11,7 @@ const countries = [
     clients: "2,500+",
     successRate: "98%"
   },
-  { 
-    flag: "🇨🇳", 
-    name: "China", 
-    services: ["F‑1 Visa", "B‑2 Visa", "Family Green Card"], 
-    gradient: "from-red-500/20 to-yellow-500/20",
-    accent: "from-red-500 to-yellow-500",
-    clients: "1,800+",
-    successRate: "97%"
-  },
+
   { 
     flag: "🇲🇽", 
     name: "Mexico", 
@@ -56,24 +48,8 @@ const countries = [
     clients: "800+",
     successRate: "97%"
   },
-  { 
-    flag: "🇵🇭", 
-    name: "Philippines", 
-    services: ["Tourist Visa", "Family-Based Green Card"], 
-    gradient: "from-blue-500/20 to-red-500/20",
-    accent: "from-blue-500 to-red-500",
-    clients: "750+",
-    successRate: "95%"
-  },
-  { 
-    flag: "🇳🇬", 
-    name: "Nigeria", 
-    services: ["Diversity Lottery", "Marriage Green Card"], 
-    gradient: "from-green-500/20 to-white/20",
-    accent: "from-green-500 to-emerald-500",
-    clients: "600+",
-    successRate: "94%"
-  },
+  
+ 
   { 
     flag: "🇩🇪", 
     name: "Germany", 
