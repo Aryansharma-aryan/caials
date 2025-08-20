@@ -5,13 +5,12 @@ const countries = [
   { 
     flag: "🇮🇳", 
     name: "India", 
-    services: ["H‑1B Visa", "Student Visa", "Green Card"], 
+    services: ["H-1B Visa", "Student Visa", "Green Card"], 
     gradient: "from-orange-500/20 to-green-500/20",
     accent: "from-orange-500 to-green-500",
     clients: "2,500+",
     successRate: "98%"
   },
-
   { 
     flag: "🇲🇽", 
     name: "Mexico", 
@@ -24,7 +23,7 @@ const countries = [
   { 
     flag: "🇨🇦", 
     name: "Canada", 
-    services: ["Business Immigration", "L‑1 Visa"], 
+    services: ["Business Immigration", "L-1 Visa"], 
     gradient: "from-red-500/20 to-blue-500/20",
     accent: "from-red-500 to-blue-500",
     clients: "950+",
@@ -33,7 +32,7 @@ const countries = [
   { 
     flag: "🇦🇺", 
     name: "Australia", 
-    services: ["EB‑5 Investment", "Family Sponsorship"], 
+    services: ["EB-5 Investment", "Family Sponsorship"], 
     gradient: "from-blue-500/20 to-red-500/20",
     accent: "from-blue-500 to-red-500",
     clients: "650+",
@@ -42,18 +41,16 @@ const countries = [
   { 
     flag: "🇬🇧", 
     name: "United Kingdom", 
-    services: ["Employment-Based Visas", "O‑1 Visa"], 
+    services: ["Employment-Based Visas", "O-1 Visa"], 
     gradient: "from-blue-500/20 to-red-500/20",
     accent: "from-blue-500 to-red-500",
     clients: "800+",
     successRate: "97%"
   },
-  
- 
   { 
     flag: "🇩🇪", 
     name: "Germany", 
-    services: ["Work Visa", "J‑1 Exchange Visa"], 
+    services: ["Work Visa", "J-1 Exchange Visa"], 
     gradient: "from-slate-600/20 to-red-500/20",
     accent: "from-slate-600 to-red-500",
     clients: "500+",
@@ -73,8 +70,29 @@ const countries = [
 export default function Countries() {
   const [hoveredCard, setHoveredCard] = useState(null);
   const [selectedCountry, setSelectedCountry] = useState(null);
+  const [windowDimensions, setWindowDimensions] = useState({ width: 1200, height: 800 });
   
-  useEffect(() => window.scrollTo(0, 0), []);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    
+    // Set initial window dimensions
+    if (typeof window !== 'undefined') {
+      setWindowDimensions({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+
+      const handleResize = () => {
+        setWindowDimensions({
+          width: window.innerWidth,
+          height: window.innerHeight
+        });
+      };
+
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }
+  }, []);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -122,11 +140,11 @@ export default function Countries() {
             key={i}
             className="absolute w-2 h-2 bg-gradient-to-r from-gray-400/30 to-gray-300/30 rounded-full"
             initial={{
-              x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1200),
-              y: Math.random() * (typeof window !== 'undefined' ? window.innerHeight : 800),
+              x: Math.random() * windowDimensions.width,
+              y: Math.random() * windowDimensions.height,
             }}
             animate={{
-              y: [null, -50, (typeof window !== 'undefined' ? window.innerHeight : 800) + 50],
+              y: [null, -50, windowDimensions.height + 50],
               opacity: [0, 0.6, 0],
               scale: [0.5, 1, 0.5],
             }}
@@ -216,7 +234,7 @@ export default function Countries() {
         >
           {countries.map((country, index) => (
             <motion.div
-              key={index}
+              key={`${country.name}-${index}`}
               variants={cardVariants}
               whileHover={{
                 y: -8,
@@ -248,7 +266,7 @@ export default function Countries() {
 
                 {/* Shimmer Effect */}
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-                  <div className={`absolute top-0 -left-full h-full w-1/2 bg-gradient-to-r from-transparent via-white/10 to-transparent transform rotate-12 group-hover:left-full transition-all duration-1000`}></div>
+                  <div className="absolute top-0 -left-full h-full w-1/2 bg-gradient-to-r from-transparent via-white/10 to-transparent transform rotate-12 group-hover:left-full transition-all duration-1000"></div>
                 </div>
 
                 {/* Card Content */}
@@ -287,7 +305,7 @@ export default function Countries() {
                     <div className="text-xs text-gray-400 uppercase tracking-wider mb-3">Specializations</div>
                     {country.services.map((service, idx) => (
                       <motion.div
-                        key={idx}
+                        key={`${service}-${idx}`}
                         initial={{ opacity: 0, x: -20 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.1 * idx }}
@@ -340,12 +358,12 @@ export default function Countries() {
             </span>
           </motion.div>
 
-          <motion.a
-            href="/contact"
+          <motion.button
             className="group relative inline-flex items-center px-12 py-6 text-lg font-bold text-white rounded-2xl overflow-hidden shadow-2xl backdrop-blur-sm border border-white/20"
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.98 }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            onClick={() => alert('Contact form would open here')}
           >
             <div className="absolute inset-0 bg-gradient-to-r from-black via-gray-900 to-black opacity-90 group-hover:opacity-100 transition-opacity duration-300"></div>
             <div className="absolute inset-0 bg-gradient-to-r from-gray-700/30 to-gray-600/30 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10 scale-110"></div>
@@ -363,7 +381,7 @@ export default function Countries() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </motion.svg>
             </span>
-          </motion.a>
+          </motion.button>
 
           <p className="text-gray-400 text-sm mt-6 max-w-md mx-auto">
             Connect with our immigration experts and discover the best path forward for your unique situation.
