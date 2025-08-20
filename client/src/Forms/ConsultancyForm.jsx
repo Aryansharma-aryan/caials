@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import axios from 'axios';
 
@@ -35,7 +36,7 @@ const ConsultancyForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:5000/api/consult', formData);
+      const res = await axios.post('https://caials-ebon.onrender.com/api/consult', formData);
       alert('✅ Consultation submitted successfully!');
       console.log(res)
       setFormData({

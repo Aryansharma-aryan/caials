@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence, useInView, useMotionValue, useSpring } from "framer-motion";
 
 const stats = [
-  { number: "18+", label: "Years of Excellence", icon: "🏆", description: "Serving clients since 2007", color: "from-amber-400 to-orange-500", targetValue: 18, suffix: "+" },
+  { number: "13+", label: "Years of Excellence", icon: "🏆", description: "Serving clients since 2013", color: "from-amber-400 to-orange-500", targetValue: 13, suffix: "+" },
   { number: "15,000+", label: "Visas Processed", icon: "📋", description: "Successfully approved applications", color: "from-blue-400 to-cyan-500", targetValue: 15000, suffix: "+" },
   { number: "96%", label: "Success Rate", icon: "✅", description: "Industry-leading approval rate", color: "from-emerald-400 to-teal-500", targetValue: 96, suffix: "%" },
   { number: "30+", label: "Countries Served", icon: "🌍", description: "Global clientele", color: "from-violet-400 to-purple-500", targetValue: 30, suffix: "+" },
@@ -14,7 +14,7 @@ const whyChooseUs = [
   {
     icon: "🎯",
     title: "Proven Expertise",
-    description: "25+ years of specialized immigration law experience with deep knowledge of USCIS procedures and requirements.",
+    description: "13+ years of specialized immigration law experience with deep knowledge of USCIS procedures and requirements.",
     gradient: "from-amber-500/20 to-orange-500/20"
   },
   {
@@ -293,7 +293,7 @@ export default function About() {
                       To provide <span className="text-blue-300 font-medium">exceptional immigration legal services</span> that transform lives and build bridges between dreams and reality. We believe every person deserves the opportunity to achieve their American dream through expert guidance, compassionate support, and unwavering dedication.
                     </p>
                     <p className="font-light">
-                      Since <span className="text-purple-300 font-medium">2007</span>, we've been committed to delivering personalized, results-driven immigration solutions that exceed expectations and create lasting positive impact in our clients' lives.
+                      Since <span className="text-purple-300 font-medium">2013</span>, we've been committed to delivering personalized, results-driven immigration solutions that exceed expectations and create lasting positive impact in our clients' lives.
                     </p>
                   </div>
                 </motion.div>
