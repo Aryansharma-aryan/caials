@@ -200,11 +200,7 @@ export default function Countries() {
               <div className="text-sm text-gray-400 uppercase tracking-wider">Success Rate</div>
             </div>
             <div>
-<<<<<<< HEAD
               <div className="text-3xl font-black text-gray-300 mb-2">15+</div>
-=======
-              <div className="text-3xl font-black text-gray-300 mb-2">13+</div>
->>>>>>> 1114abb9 (Initial commit from root folder)
               <div className="text-sm text-gray-400 uppercase tracking-wider">Years Experience</div>
             </div>
           </div>
