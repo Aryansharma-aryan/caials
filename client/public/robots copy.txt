@@ -1,9 +1,0 @@
-# robots.txt
-# Rules for search engine crawlers
-
-# Allow all web crawlers full access
-User-agent: *
-Allow: /
-
-# Sitemap location
-Sitemap: https://www.caials.com/sitemap.xml
