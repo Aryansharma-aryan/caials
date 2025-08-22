@@ -12,7 +12,7 @@ const handleSubmit = async (e) => {
   setError("");
 
   try {
-    const response = await fetch("https://caials.onrender.com/api/admin/login", {
+    const response = await fetch("https://caials-ebon.onrender.com/api/admin/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
