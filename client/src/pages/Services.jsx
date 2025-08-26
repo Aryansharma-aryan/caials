@@ -3,45 +3,30 @@ import { motion } from "framer-motion";
 
 const visaServices = [
   {
-    title: "H‑1B Visa Petitions",
-    category: "Professional Work Visas",
-    description: "Comprehensive H‑1B visa services for highly skilled professionals in specialty occupations. We handle the complete process from initial consultation to visa approval.",
+    title: "Family Immigration",
+    category: "Family-Based Immigration",
+    description: "Reunite with your loved ones through comprehensive family-based immigration services. We specialize in helping families navigate complex immigration processes to bring relatives to the United States.",
+    detailedDescription: "Our family immigration services cover all aspects of bringing family members to the United States. We handle immediate relative petitions for spouses, parents, and unmarried children under 21 of U.S. citizens, as well as family preference categories for siblings and married children. Our experienced team guides you through the entire process, from filing the initial I-130 petition to consular processing or adjustment of status. We also provide support for K-1 fiancé visas, marriage-based green cards, and help with overcoming common challenges such as inadmissibility issues, lengthy processing times, and complex documentation requirements.",
     features: [
-      "Labor Condition Application (LCA) filing",
-      "Form I-129 petition preparation & submission",
-      "H‑1B lottery registration and strategy",
-      "RFE response preparation",
-      "Extension and transfer assistance",
-      "Consular processing support",
-      "Path to permanent residency planning"
+      "I-130 Petition for Alien Relative",
+      "Marriage-based Green Card applications",
+      "K-1 Fiancé visa processing",
+      "Family preference category petitions",
+      "Consular processing guidance",
+      "Adjustment of status applications",
+      "Inadmissibility waivers",
+      "Document preparation and review"
     ],
-    processingTime: "4-8 months",
-    successRate: "95%",
-    icon: "💼",
-    gradient: "from-emerald-400 to-teal-500"
+    processingTime: "8-33 months",
+    successRate: "96%",
+    icon: "👨‍👩‍👧‍👦",
+    gradient: "from-pink-400 to-rose-500"
   },
   {
-    title: "F‑1 Student Visas",
-    category: "Academic Visas",
-    description: "Complete support for international students pursuing full-time academic programs in accredited U.S. institutions.",
-    features: [
-      "University selection guidance",
-      "I-20 document processing",
-      "SEVIS fee payment assistance",
-      "Visa interview preparation",
-      "OPT/STEM OPT applications",
-      "CPT authorization support",
-      "F‑1 to H‑1B transition planning"
-    ],
-    processingTime: "2-4 months",
-    successRate: "92%",
-    icon: "🎓",
-    gradient: "from-amber-400 to-orange-500"
-  },
-  {
-    title: "Green Card (Permanent Residency)",
+    title: "Green Card Petition",
     category: "Permanent Immigration",
     description: "Expert guidance through employment-based and family-based permanent residency processes with comprehensive legal support.",
+    detailedDescription: "Our green card petition services encompass all categories of permanent residency applications. For employment-based cases, we handle PERM Labor Certifications, National Interest Waivers, and extraordinary ability petitions. We guide you through the three-step process: labor certification (if required), I-140 immigrant petition, and adjustment of status or consular processing. Our team has extensive experience with priority date tracking, handling RFEs, and navigating complex immigration law changes. We also assist with family-based green cards, diversity visa applications, and special immigrant categories including religious workers and international broadcasters.",
     features: [
       "PERM Labor Certification",
       "I‑140 immigrant petition filing",
@@ -49,7 +34,8 @@ const visaServices = [
       "National Interest Waiver (NIW)",
       "Family-based petitions (I‑130)",
       "Consular processing abroad",
-      "Priority date tracking & strategy"
+      "Priority date tracking & strategy",
+      "EB-1, EB-2, EB-3 category expertise"
     ],
     processingTime: "12-36 months",
     successRate: "97%",
@@ -60,6 +46,7 @@ const visaServices = [
     title: "U.S. Citizenship / Naturalization",
     category: "Citizenship Services",
     description: "Helping lawful permanent residents achieve U.S. citizenship through the naturalization process with expert preparation and support.",
+    detailedDescription: "Our citizenship and naturalization services provide comprehensive support for lawful permanent residents seeking U.S. citizenship. We begin with a thorough eligibility assessment, reviewing your continuous residence, physical presence, and good moral character requirements. Our team prepares your N-400 application with meticulous attention to detail, ensuring all supporting documentation is complete and accurate. We provide extensive preparation for the naturalization test, including civics and English language components, and offer mock interview sessions to build your confidence. Our services extend to handling complex cases involving criminal history, tax issues, or extended absences from the United States.",
     features: [
       "N‑400 application preparation",
       "Continuous residence documentation",
@@ -67,7 +54,8 @@ const visaServices = [
       "Citizenship test preparation",
       "Interview coaching and support",
       "Oath ceremony assistance",
-      "Expedited processing when eligible"
+      "Expedited processing when eligible",
+      "Complex case handling"
     ],
     processingTime: "8-14 months",
     successRate: "98%",
@@ -75,9 +63,10 @@ const visaServices = [
     gradient: "from-blue-400 to-indigo-500"
   },
   {
-    title: "B‑1/B‑2 Visitor Visas",
+    title: "Business / Visitor Visa",
     category: "Temporary Visas",
     description: "Professional assistance for business and tourism visitors to maximize approval chances and ensure smooth entry to the United States.",
+    detailedDescription: "Our B-1/B-2 visitor visa services are designed to maximize your chances of approval for business or tourism visits to the United States. We provide comprehensive consultation to determine the most appropriate visa category for your travel purpose and help you prepare a compelling application. Our team assists with DS-160 form completion, schedules visa interviews, and provides thorough preparation including mock interview sessions. We help document your strong ties to your home country, demonstrate sufficient financial resources, and clearly establish the temporary nature of your visit. For business visitors, we assist with invitation letters, meeting schedules, and supporting documentation from U.S. sponsors.",
     features: [
       "DS‑160 form completion",
       "Financial documentation review",
@@ -85,7 +74,8 @@ const visaServices = [
       "Interview preparation & coaching",
       "Visa denial appeal assistance",
       "Multiple entry visa strategies",
-      "Extension of stay applications"
+      "Extension of stay applications",
+      "Business meeting documentation"
     ],
     processingTime: "2-8 weeks",
     successRate: "89%",
@@ -93,80 +83,186 @@ const visaServices = [
     gradient: "from-cyan-400 to-blue-500"
   },
   {
-    title: "L‑1 Intra-Company Transfers",
-    category: "Executive Transfers",
-    description: "Specialized services for multinational companies transferring executives, managers, and specialized knowledge employees to U.S. operations.",
+    title: "OCI Card / Indian Passport",
+    category: "Overseas Citizen Services",
+    description: "Comprehensive assistance for Overseas Citizen of India (OCI) card applications and Indian passport services for eligible individuals.",
+    detailedDescription: "Our OCI card and Indian passport services cater to individuals of Indian origin and their family members seeking to obtain or renew these important documents. For OCI applications, we guide you through eligibility requirements, help gather necessary documentation including birth certificates, passports, and naturalization certificates, and ensure your application meets all current requirements. We assist with both new OCI applications and OCI card replacements due to passport changes. For Indian passport services, we help with renewals, new applications for minors, and address changes. Our team stays updated with the latest consular requirements and processing procedures to ensure smooth application processing.",
     features: [
-      "L‑1A manager/executive petitions",
-      "L‑1B specialized knowledge cases",
-      "Qualifying relationship documentation",
-      "Blanket L petition applications",
-      "Individual L‑1 petitions",
-      "Extensions and amendments",
-      "L‑1 to green card transition"
+      "OCI card new applications",
+      "OCI card renewal and replacement",
+      "Indian passport renewal services",
+      "Document verification and preparation",
+      "Consular appointment scheduling",
+      "Application tracking and follow-up",
+      "Emergency passport services",
+      "Minor passport applications"
     ],
     processingTime: "3-6 months",
     successRate: "94%",
-    icon: "🏢",
-    gradient: "from-violet-400 to-purple-500"
+    icon: "🇮🇳",
+    gradient: "from-orange-400 to-red-500"
   },
   {
-    title: "O‑1 Visa for Extraordinary Ability",
-    category: "Exceptional Talent",
-    description: "Tailored representation for individuals with extraordinary ability in sciences, arts, education, business, or athletics seeking O‑1 classification.",
+    title: "India Visa Services",
+    category: "India Travel",
+    description: "Complete visa assistance for travel to India including tourist, business, medical, and employment visas with expert guidance.",
+    detailedDescription: "Our India visa services provide comprehensive support for various types of Indian visas including tourist, business, medical, employment, and student visas. We assist with the online application process, document preparation, and appointment scheduling at Indian consulates. Our team is well-versed with the latest e-visa procedures and traditional visa applications. We help determine the most appropriate visa category based on your travel purpose, ensure all documentation meets current requirements, and provide guidance on visa validity periods and entry conditions. For business visas, we assist with invitation letters and company documentation, while for medical visas, we help with hospital letters and treatment documentation.",
     features: [
-      "Extraordinary ability evidence compilation",
-      "Advisory opinion letters",
-      "Peer recommendation letters",
-      "Achievement documentation",
-      "Media coverage portfolio",
-      "O‑1A and O‑1B classifications",
-      "Extensions and amendments"
+      "Tourist visa applications",
+      "Business visa processing",
+      "Medical visa assistance",
+      "Employment visa services",
+      "E-visa application support",
+      "Document preparation and review",
+      "Consular appointment coordination",
+      "Visa extension guidance"
     ],
-    processingTime: "2-4 months",
-    successRate: "91%",
-    icon: "⭐",
-    gradient: "from-yellow-400 to-amber-500"
+    processingTime: "1-4 weeks",
+    successRate: "92%",
+    icon: "🕉️",
+    gradient: "from-amber-400 to-orange-500"
   },
   {
-    title: "EB‑5 Investor Green Card",
-    category: "Investment Immigration",
-    description: "Comprehensive EB‑5 investment immigration services for qualified investors seeking permanent residency through job-creating investments.",
+    title: "Student Visa (F-1)",
+    category: "Academic Visas",
+    description: "Complete support for international students pursuing full-time academic programs in accredited U.S. institutions.",
+    detailedDescription: "Our F-1 student visa services provide comprehensive support for international students at every stage of their academic journey in the United States. We begin with university selection guidance, helping you choose institutions that match your academic goals and visa processing requirements. Our team assists with I-20 document processing, SEVIS fee payment, and DS-160 form completion. We provide thorough visa interview preparation, including mock interviews and coaching on common questions. Once in the U.S., we continue to support students with Optional Practical Training (OPT) applications, STEM OPT extensions, Curricular Practical Training (CPT) authorizations, and F-1 to H-1B transition planning.",
     features: [
-      "Regional Center project selection",
-      "Direct investment structuring",
-      "I‑526E petition preparation",
-      "Source of funds documentation",
-      "Job creation compliance",
-      "I‑829 removal of conditions",
-      "Investment monitoring & reporting"
-    ],
-    processingTime: "24-60 months",
-    successRate: "93%",
-    icon: "💰",
-    gradient: "from-emerald-400 to-green-500"
-  },
-  {
-    title: "J‑1 Exchange Visitor Programs",
-    category: "Cultural Exchange",
-    description: "Support for various J‑1 exchange visitor categories including researchers, professors, trainees, and cultural exchange participants.",
-    features: [
-      "DS‑2019 form processing",
-      "Program sponsor coordination",
-      "J‑1 waiver applications",
-      "Academic and training programs",
-      "Two-year home residency waivers",
-      "Program extensions",
+      "University selection guidance",
+      "I-20 document processing",
+      "SEVIS fee payment assistance",
+      "Visa interview preparation",
+      "OPT/STEM OPT applications",
+      "CPT authorization support",
+      "F‑1 to H‑1B transition planning",
       "Status maintenance guidance"
     ],
-    processingTime: "1-3 months",
-    successRate: "96%",
-    icon: "🌍",
-    gradient: "from-teal-400 to-cyan-500"
+    processingTime: "2-4 months",
+    successRate: "92%",
+    icon: "🎓",
+    gradient: "from-amber-400 to-orange-500"
+  },
+  {
+    title: "Religious Visa (R-1)",
+    category: "Religious Worker",
+    description: "Specialized services for religious workers seeking temporary entry to the United States for religious purposes and activities.",
+    detailedDescription: "Our R-1 religious visa services are specifically designed for religious workers, ministers, and individuals engaged in religious occupations or vocations. We assist qualifying religious organizations in petitioning for their religious workers and help individuals navigate the complex requirements for R-1 classification. Our services include verification of the religious organization's tax-exempt status, documentation of the beneficiary's religious training and experience, and preparation of detailed job descriptions for religious positions. We also handle R-1 extensions, changes of status, and the transition from R-1 to permanent residency through special immigrant religious worker categories.",
+    features: [
+      "R-1 petition preparation and filing",
+      "Religious organization qualification verification",
+      "Religious worker background documentation",
+      "Job description and duties preparation",
+      "Tax-exempt status verification",
+      "R-1 extensions and renewals",
+      "Change of status applications",
+      "Path to permanent residency guidance"
+    ],
+    processingTime: "3-6 months",
+    successRate: "91%",
+    icon: "⛪",
+    gradient: "from-purple-400 to-violet-500"
+  },
+  {
+    title: "Divorce Proceedings",
+    category: "Family Law Services",
+    description: "Compassionate legal support for divorce proceedings with attention to immigration status implications and family welfare.",
+    detailedDescription: "Our divorce services provide sensitive and comprehensive legal support for individuals navigating the dissolution of marriage, particularly when immigration status is involved. We understand the unique challenges faced by immigrants during divorce proceedings, including concerns about conditional permanent residence, VAWA self-petitions, and the impact on pending immigration applications. Our team provides guidance on property division, child custody arrangements, spousal support, and the protection of immigration benefits. We work closely with family law attorneys and immigration specialists to ensure all aspects of your case are properly addressed, including the preparation of joint petitions to remove conditions on residence before divorce finalization.",
+    features: [
+      "Divorce petition filing and processing",
+      "Immigration status protection strategies",
+      "VAWA self-petition assistance",
+      "Conditional residence issues",
+      "Property division guidance",
+      "Child custody arrangements",
+      "Spousal support negotiations",
+      "Collaborative legal approach"
+    ],
+    processingTime: "6-18 months",
+    successRate: "88%",
+    icon: "⚖️",
+    gradient: "from-gray-400 to-slate-500"
+  },
+  {
+    title: "Various Immigration Services",
+    category: "Comprehensive Immigration",
+    description: "Wide range of specialized immigration services including waivers, appeals, deportation defense, and complex case solutions.",
+    detailedDescription: "Our comprehensive immigration services cover a broad spectrum of specialized cases and complex immigration matters. This includes inadmissibility waivers for various grounds such as unlawful presence, criminal convictions, and health-related issues. We handle immigration appeals before the Board of Immigration Appeals (BIA), federal court litigation, and deportation defense proceedings. Our team provides expertise in humanitarian cases including asylum, withholding of removal, and Convention Against Torture claims. We also assist with immigration consequences of criminal convictions, post-conviction relief, and complex family reunification cases involving multiple jurisdictions and legal challenges.",
+    features: [
+      "Inadmissibility waivers (I-601/I-601A)",
+      "Immigration appeals and litigation",
+      "Deportation defense representation",
+      "Asylum and refugee cases",
+      "Criminal immigration consequences",
+      "Post-conviction relief coordination",
+      "Humanitarian parole applications",
+      "Complex multi-jurisdictional cases"
+    ],
+    processingTime: "Varies by case",
+    successRate: "85%",
+    icon: "🛡️",
+    gradient: "from-indigo-400 to-purple-500"
+  },
+  {
+    title: "H‑1B Visa Petitions",
+    category: "Professional Work Visas",
+    description: "Comprehensive H‑1B visa services for highly skilled professionals in specialty occupations. We handle the complete process from initial consultation to visa approval.",
+    detailedDescription: "Our H-1B visa services represent the gold standard in professional work visa assistance. We provide end-to-end support for employers and employees navigating the complex H-1B process. Our services begin with eligibility assessment and job analysis to ensure the position qualifies as a specialty occupation. We handle Labor Condition Application (LCA) preparation and filing, ensuring compliance with prevailing wage requirements and working conditions. Our team prepares comprehensive I-129 petitions with detailed supporting evidence, including employer letters, educational credential evaluations, and expert opinion letters when needed. We also provide strategic guidance for the H-1B lottery system, premium processing decisions, and long-term career planning including the transition to permanent residency.",
+    features: [
+      "Labor Condition Application (LCA) filing",
+      "Form I-129 petition preparation & submission",
+      "H‑1B lottery registration and strategy",
+      "RFE response preparation",
+      "Extension and transfer assistance",
+      "Consular processing support",
+      "Path to permanent residency planning",
+      "Premium processing guidance"
+    ],
+    processingTime: "4-8 months",
+    successRate: "95%",
+    icon: "💼",
+    gradient: "from-emerald-400 to-teal-500"
+  },
+  {
+    title: "U.K. Visa Services",
+    category: "International Visa Services",
+    description: "Expert assistance with United Kingdom visa applications including visitor, work, study, and settlement visas with comprehensive support.",
+    detailedDescription: "Our U.K. visa services provide expert guidance for various types of British visas including visitor visas, work permits, student visas, spouse visas, and settlement applications. We assist with the complex UK immigration system, helping clients navigate the points-based system for work visas, Tier 4 student applications, and family reunion cases. Our team is experienced with UK visitor visa applications, ensuring proper documentation of travel purposes, financial capacity, and return intentions. For work-related applications, we assist with Skilled Worker visas, Global Talent visas, and Innovator visas. We also provide support for UK settlement applications, citizenship by naturalization, and complex cases involving previous visa refusals or immigration violations.",
+    features: [
+      "UK visitor visa applications",
+      "Skilled Worker visa petitions",
+      "Student visa (Tier 4) assistance",
+      "Spouse and family reunion visas",
+      "Settlement and ILR applications",
+      "UK citizenship by naturalization",
+      "Points-based system guidance",
+      "Visa refusal appeals and reviews"
+    ],
+    processingTime: "3-12 weeks",
+    successRate: "90%",
+    icon: "🇬🇧",
+    gradient: "from-blue-400 to-red-500"
+  },
+  {
+    title: "Canada Visa & PR",
+    category: "Canadian Immigration",
+    description: "Comprehensive Canadian immigration services including visitor visas, work permits, study permits, and permanent residency applications.",
+    detailedDescription: "Our Canadian immigration services cover the full spectrum of Canada's immigration programs. We specialize in the Express Entry system, including Federal Skilled Worker, Canadian Experience Class, and Provincial Nominee Programs (PNP). Our team provides comprehensive support for permanent residency applications, from initial eligibility assessment through landing and settlement. We assist with temporary residence applications including visitor visas, work permits, and study permits. Our services extend to family class sponsorship, Quebec immigration programs, and Canadian citizenship applications. We also provide guidance on maintaining permanent resident status, meeting residency obligations, and addressing complex cases involving criminal inadmissibility or medical issues.",
+    features: [
+      "Express Entry system navigation",
+      "Provincial Nominee Program (PNP)",
+      "Family class sponsorship",
+      "Work permits and LMIAs",
+      "Study permits and DLI selection",
+      "Visitor visa applications",
+      "Canadian citizenship services",
+      "Immigration appeals and reviews"
+    ],
+    processingTime: "6-18 months",
+    successRate: "93%",
+    icon: "🇨🇦",
+    gradient: "from-red-400 to-red-600"
   }
-];
-
-export default function Services() {
+];export default function Services() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [hoveredCard, setHoveredCard] = useState(null);
 
