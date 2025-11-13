@@ -98,7 +98,7 @@ const createConsultation = async (req, res) => {
     process.nextTick(async () => {
       try {
         await resend.emails.send({
-          from: "CAIALS <noreply@caials.com>", // domain must be verified in Resend
+     from: "CAIALS <onboarding@resend.dev>",
           to: process.env.ADMIN_RECIPIENT,
           subject: `📩 New Consultation from ${newConsultation.fullName}`,
           html: buildConsultationHtml(newConsultation),
