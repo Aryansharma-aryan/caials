@@ -182,13 +182,15 @@ const ConsultancyForm = () => {
             <option value="Email">Email</option>
           </select>
 
-          <input
-            type="date"
-            name="preferredDate"
-            value={formData.preferredDate}
-            onChange={handleChange}
-            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-400 transition"
-          />
+        <input
+  type="date"
+  name="preferredDate"
+  value={formData.preferredDate}
+  onChange={handleChange}
+  min={new Date().toISOString().split("T")[0]} // Disable past dates
+  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-400 transition"
+/>
+
 
           <input
             type="text"
