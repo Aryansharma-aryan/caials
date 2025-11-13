@@ -3,7 +3,7 @@ const router = express.Router();
 
 const {
   createConsultation,
-  validateConsultation,
+  
   getAllConsultations,
   markConsultationCompleted,
   pendingBadge,
@@ -19,7 +19,7 @@ const { loginAdmin, verifyAdmin } = require('../controller/AdminController');
 router.post('/admin/login', loginAdmin);
 
 // 💬 Consultation routes
-router.post('/consult', validateConsultation, createConsultation);
+router.post('/consult', createConsultation);
 
 // 🧾 Fetch all consultations (admin-protected)
 router.get('/getConsultation', verifyAdmin, getAllConsultations);

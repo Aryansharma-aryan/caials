@@ -1,4 +1,3 @@
-const { body, validationResult } = require('express-validator');
 const Consultation = require('../models/Consultation');
 const nodemailer = require('nodemailer');
 require('dotenv').config();
@@ -35,40 +34,76 @@ function buildConsultationHtml(consult) {
 }
 
 /* ---------------------------------------------------
-   ✅ VALIDATION MIDDLEWARE
---------------------------------------------------- */
-const validateConsultation = [
-  body('fullName').trim().notEmpty().withMessage('Full name is required.')
-    .matches(/^[A-Za-z\s.'-]+$/).withMessage('Full name contains invalid characters.'),
-  body('email').trim().isEmail().withMessage('Enter a valid email address.').normalizeEmail(),
-  body('phone').trim().isNumeric().withMessage('Phone must contain only numbers.')
-    .isLength({ min: 7, max: 15 }).withMessage('Phone number length must be between 7 and 15 digits.'),
-  body('countryOfInterest').trim().notEmpty().withMessage('Country is required.'),
-  body('visaType').trim().notEmpty().withMessage('Visa type is required.'),
-  body('contactMethod').trim().notEmpty().withMessage('Contact method is required.')
-    .isIn(['Email', 'Phone', 'WhatsApp']).withMessage('Invalid contact method.'),
-  body('preferredDate').optional({ checkFalsy: true })
-    .isISO8601().withMessage('Preferred date must be valid (YYYY-MM-DD).'),
-  body('purpose').optional({ checkFalsy: true }).trim().isLength({ max: 200 }).withMessage('Purpose too long (max 200 chars).'),
-  body('message').optional({ checkFalsy: true }).trim().isLength({ max: 500 }).withMessage('Message too long (max 500 chars).')
-];
-
-/* ---------------------------------------------------
-   📨 CREATE CONSULTATION + EMAIL
+   📨 CREATE CONSULTATION + EMAIL (No express-validator)
 --------------------------------------------------- */
 const createConsultation = async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
-
   try {
-    const { fullName, email, phone, countryOfInterest, visaType, contactMethod, preferredDate, purpose, message } = req.body;
+    let {
+      fullName,
+      email,
+      phone,
+      countryOfInterest,
+      visaType,
+      contactMethod,
+      preferredDate,
+      purpose,
+      message
+    } = req.body;
 
+    // --- Trim all string inputs ---
+    fullName = fullName?.trim();
+    email = email?.trim();
+    phone = phone?.trim();
+    countryOfInterest = countryOfInterest?.trim();
+    visaType = visaType?.trim();
+    contactMethod = contactMethod?.trim();
+    preferredDate = preferredDate?.trim();
+    purpose = purpose?.trim();
+    message = message?.trim();
+
+    // --- Minimal Validation ---
+    if (!fullName || !email || !phone || !countryOfInterest || !visaType || !contactMethod) {
+      return res.status(400).json({ message: 'Please fill all required fields.' });
+    }
+
+    if (!/^[A-Za-z\s.'-]+$/.test(fullName)) {
+      return res.status(400).json({ message: 'Full name contains invalid characters.' });
+    }
+
+    if (!/^\d{7,15}$/.test(phone)) {
+      return res.status(400).json({ message: 'Phone number must be 7-15 digits.' });
+    }
+
+    if (!/.+@.+\..+/.test(email)) {
+      return res.status(400).json({ message: 'Email is invalid.' });
+    }
+
+    const allowedContactMethods = ['Email', 'Phone', 'WhatsApp'];
+    if (!allowedContactMethods.includes(contactMethod)) {
+      return res.status(400).json({ message: 'Invalid contact method.' });
+    }
+
+    // Optional: validate date if provided
+    if (preferredDate && isNaN(Date.parse(preferredDate))) {
+      return res.status(400).json({ message: 'Preferred date is invalid.' });
+    }
+
+    // Create and save consultation
     const newConsultation = new Consultation({
-      fullName, email, phone, countryOfInterest, visaType, contactMethod, preferredDate, purpose, message
+      fullName,
+      email,
+      phone,
+      countryOfInterest,
+      visaType,
+      contactMethod,
+      preferredDate,
+      purpose,
+      message
     });
 
     await newConsultation.save();
 
+    // Send email
     const mailOptions = {
       from: `"CAIALS Consultation" <${process.env.EMAIL_USER}>`,
       to: ADMIN_RECIPIENT,
@@ -77,12 +112,9 @@ const createConsultation = async (req, res) => {
       replyTo: email
     };
 
-    try {
-      const info = await transporter.sendMail(mailOptions);
-      console.log("✅ Email sent:", info.messageId);
-    } catch (mailErr) {
-      console.error("❌ Error sending email:", mailErr);
-    }
+    transporter.sendMail(mailOptions)
+      .then(info => console.log("✅ Email sent:", info.messageId))
+      .catch(err => console.error("❌ Error sending email:", err));
 
     res.status(201).json({ message: "Consultation submitted successfully." });
   } catch (err) {
@@ -139,8 +171,6 @@ const cleanupOldConsultations = async (req, res) => {
 /* ---------------------------------------------------
    🆕 NEW CONTROLLERS (Delete, Clear All, Pagination)
 --------------------------------------------------- */
-
-// 🔹 Delete consultation by ID
 const deleteConsultationById = async (req, res) => {
   try {
     const deleted = await Consultation.findByIdAndDelete(req.params.id);
@@ -152,7 +182,6 @@ const deleteConsultationById = async (req, res) => {
   }
 };
 
-// 🔹 Clear all consultations
 const clearAllConsultations = async (req, res) => {
   try {
     const result = await Consultation.deleteMany({});
@@ -163,7 +192,6 @@ const clearAllConsultations = async (req, res) => {
   }
 };
 
-// 🔹 Paginated consultations (20 per page)
 const getConsultationsPaginated = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
@@ -191,7 +219,6 @@ const getConsultationsPaginated = async (req, res) => {
    📦 EXPORTS
 --------------------------------------------------- */
 module.exports = {
-  validateConsultation,
   createConsultation,
   getAllConsultations,
   markConsultationCompleted,

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import axios from 'axios';
 
@@ -35,16 +34,29 @@ const ConsultancyForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Minimal front-end validation
+    if (!formData.fullName || !formData.email || !formData.phone || !formData.countryOfInterest || !formData.visaType || !formData.contactMethod) {
+      alert('❌ Please fill all required fields.');
+      return;
+    }
+
     try {
       const res = await axios.post('https://caials-ebon.onrender.com/api/consult', formData);
-      alert('✅ Consultation submitted successfully!');
-      console.log(res)
+      alert('✅ Consultation submitted successfully!',res);
       setFormData({
-        fullName: '', email: '', phone: '', countryOfInterest: '', visaType: '',
-        contactMethod: '', preferredDate: '', purpose: '', message: '',
+        fullName: '',
+        email: '',
+        phone: '',
+        countryOfInterest: '',
+        visaType: '',
+        contactMethod: '',
+        preferredDate: '',
+        purpose: '',
+        message: '',
       });
     } catch (error) {
-      console.error('Submission error:', error);
+      console.error('Submission error:', error.response || error);
       alert('❌ Something went wrong. Please try again.');
     }
   };
@@ -56,6 +68,7 @@ const ConsultancyForm = () => {
           Book Your <span className="text-teal-600">Free Consultation</span>
         </h2>
         <form onSubmit={handleSubmit} className="space-y-6 animate-fade-up">
+          {/* Full Name */}
           <input
             type="text"
             name="fullName"
@@ -65,6 +78,8 @@ const ConsultancyForm = () => {
             required
             className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-400 focus:outline-none transition"
           />
+
+          {/* Email & Phone */}
           <div className="flex gap-4">
             <input
               type="email"
@@ -85,6 +100,8 @@ const ConsultancyForm = () => {
               className="w-1/2 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-400 transition"
             />
           </div>
+
+          {/* Country of Interest */}
           <select
             name="countryOfInterest"
             value={formData.countryOfInterest}
@@ -97,6 +114,8 @@ const ConsultancyForm = () => {
               <option key={i} value={country}>{country}</option>
             ))}
           </select>
+
+          {/* Visa Type */}
           <select
             name="visaType"
             value={formData.visaType}
@@ -109,6 +128,8 @@ const ConsultancyForm = () => {
               <option key={i} value={type}>{type}</option>
             ))}
           </select>
+
+          {/* Contact Method */}
           <select
             name="contactMethod"
             value={formData.contactMethod}
@@ -117,10 +138,12 @@ const ConsultancyForm = () => {
             className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white focus:ring-2 focus:ring-indigo-400"
           >
             <option value="">Preferred Contact Method</option>
-            <option value="Phone Call">Phone Call</option>
+            <option value="Phone">Phone</option>
             <option value="WhatsApp">WhatsApp</option>
             <option value="Email">Email</option>
           </select>
+
+          {/* Preferred Date */}
           <input
             type="date"
             name="preferredDate"
@@ -128,22 +151,30 @@ const ConsultancyForm = () => {
             onChange={handleChange}
             className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-400 transition"
           />
+
+          {/* Purpose */}
           <input
             type="text"
             name="purpose"
             placeholder="Purpose of Consultation"
+            maxLength="200"
             value={formData.purpose}
             onChange={handleChange}
             className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-400"
           />
+
+          {/* Message */}
           <textarea
             name="message"
             placeholder="Additional Message (Optional)"
+            maxLength="500"
             value={formData.message}
             onChange={handleChange}
             rows="4"
             className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-400"
           />
+
+          {/* Submit Button */}
           <button
             type="submit"
             className="w-full py-3 text-white font-semibold bg-gradient-to-r from-indigo-500 to-teal-500 rounded-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
