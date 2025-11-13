@@ -66,7 +66,7 @@ const ConsultancyForm = () => {
 
     setLoading(true);
     try {
-<<<<<<< HEAD
+
       // ✅ Short network timeout (avoid hanging on Render)
       const res = await axios.post(
         'https://caials-ebon.onrender.com/api/consult',
@@ -78,14 +78,14 @@ const ConsultancyForm = () => {
       );
 
       toast.success(res.data?.message || '✅ Consultation submitted successfully!');
-=======
+
       const res = await axios.post('https://caials-ebon.onrender.com/api/consult', formData, {
 
         headers: { 'Content-Type': 'application/json' }
         
       });
       toast.success('✅ Consultation submitted successfully!');
->>>>>>> 057153f4df17be7f9f06c08c0787213156ccf036
+ 
       setFormData({
         fullName: '',
         email: '',
@@ -98,7 +98,6 @@ const ConsultancyForm = () => {
         message: '',
       });
     } catch (error) {
-<<<<<<< HEAD
       console.error('Submission error:', error);
       if (error.code === 'ECONNABORTED') {
         toast.error('⚠️ Server took too long to respond. Please try again later.');
@@ -106,11 +105,6 @@ const ConsultancyForm = () => {
         const backendMsg = error.response?.data?.message || '❌ Something went wrong. Please try again.';
         toast.error(backendMsg);
       }
-=======
-      console.error('Submission error:', error.response || error);
-      const backendMsg = error.response?.data?.message || '❌ Something went wrong. Please try again.';
-      toast.error(backendMsg);
->>>>>>> 057153f4df17be7f9f06c08c0787213156ccf036
     } finally {
       setLoading(false);
     }
@@ -148,7 +142,6 @@ const ConsultancyForm = () => {
             <option value="Email">Email</option>
           </select>
 
-<<<<<<< HEAD
           <input
             type="date"
             name="preferredDate"
@@ -182,13 +175,6 @@ const ConsultancyForm = () => {
               loading ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'
             }`}
           >
-=======
-          <input type="date" name="preferredDate" value={formData.preferredDate} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-400 transition" />
-          <input type="text" name="purpose" placeholder="Purpose of Consultation" maxLength="200" value={formData.purpose} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-400" />
-          <textarea name="message" placeholder="Additional Message (Optional)" maxLength="500" value={formData.message} onChange={handleChange} rows="4" className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-400" />
-
-          <button type="submit" disabled={loading} className={`w-full py-3 text-white font-semibold bg-gradient-to-r from-indigo-500 to-teal-500 rounded-lg transition-all duration-300 ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'}`}>
->>>>>>> 057153f4df17be7f9f06c08c0787213156ccf036
             {loading ? 'Submitting...' : '🚀 Submit Request'}
           </button>
         </form>
