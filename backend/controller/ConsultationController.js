@@ -35,80 +35,40 @@ function buildConsultationHtml(consult) {
 }
 
 /* ---------------------------------------------------
-   ✅ VALIDATION MIDDLEWARE (using express-validator)
+   ✅ VALIDATION MIDDLEWARE
 --------------------------------------------------- */
 const validateConsultation = [
-  body('fullName')
-    .trim()
-    .notEmpty().withMessage('Full name is required.')
+  body('fullName').trim().notEmpty().withMessage('Full name is required.')
     .matches(/^[A-Za-z\s.'-]+$/).withMessage('Full name contains invalid characters.'),
-  
-  body('email')
-    .trim()
-    .isEmail().withMessage('Enter a valid email address.')
-    .normalizeEmail(),
-  
-  body('phone')
-    .trim()
-    .isNumeric().withMessage('Phone must contain only numbers.')
+  body('email').trim().isEmail().withMessage('Enter a valid email address.').normalizeEmail(),
+  body('phone').trim().isNumeric().withMessage('Phone must contain only numbers.')
     .isLength({ min: 7, max: 15 }).withMessage('Phone number length must be between 7 and 15 digits.'),
-  
-  body('countryOfInterest')
-    .trim()
-    .notEmpty().withMessage('Country is required.'),
-  
-  body('visaType')
-    .trim()
-    .notEmpty().withMessage('Visa type is required.'),
-  
-  body('contactMethod')
-    .trim()
-    .notEmpty().withMessage('Contact method is required.')
+  body('countryOfInterest').trim().notEmpty().withMessage('Country is required.'),
+  body('visaType').trim().notEmpty().withMessage('Visa type is required.'),
+  body('contactMethod').trim().notEmpty().withMessage('Contact method is required.')
     .isIn(['Email', 'Phone', 'WhatsApp']).withMessage('Invalid contact method.'),
-  
-  body('preferredDate')
-    .optional({ checkFalsy: true })
-    .isISO8601().withMessage('Preferred date must be a valid date (YYYY-MM-DD).'),
-  
-  body('purpose')
-    .optional({ checkFalsy: true })
-    .trim()
-    .isLength({ max: 200 }).withMessage('Purpose is too long (max 200 chars).'),
-  
-  body('message')
-    .optional({ checkFalsy: true })
-    .trim()
-    .isLength({ max: 500 }).withMessage('Message is too long (max 500 chars).')
+  body('preferredDate').optional({ checkFalsy: true })
+    .isISO8601().withMessage('Preferred date must be valid (YYYY-MM-DD).'),
+  body('purpose').optional({ checkFalsy: true }).trim().isLength({ max: 200 }).withMessage('Purpose too long (max 200 chars).'),
+  body('message').optional({ checkFalsy: true }).trim().isLength({ max: 500 }).withMessage('Message too long (max 500 chars).')
 ];
 
 /* ---------------------------------------------------
-   📨 CREATE CONSULTATION + SEND EMAIL
+   📨 CREATE CONSULTATION + EMAIL
 --------------------------------------------------- */
 const createConsultation = async (req, res) => {
-  // ✅ Check validation errors
   const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
+  if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
   try {
     const { fullName, email, phone, countryOfInterest, visaType, contactMethod, preferredDate, purpose, message } = req.body;
 
     const newConsultation = new Consultation({
-      fullName,
-      email,
-      phone,
-      countryOfInterest,
-      visaType,
-      contactMethod,
-      preferredDate,
-      purpose,
-      message
+      fullName, email, phone, countryOfInterest, visaType, contactMethod, preferredDate, purpose, message
     });
 
     await newConsultation.save();
 
-    // --- Send email ---
     const mailOptions = {
       from: `"CAIALS Consultation" <${process.env.EMAIL_USER}>`,
       to: ADMIN_RECIPIENT,
@@ -125,7 +85,6 @@ const createConsultation = async (req, res) => {
     }
 
     res.status(201).json({ message: "Consultation submitted successfully." });
-
   } catch (err) {
     console.error("❌ Error creating consultation:", err);
     res.status(500).json({ message: "Server Error. Please try again later." });
@@ -133,14 +92,13 @@ const createConsultation = async (req, res) => {
 };
 
 /* ---------------------------------------------------
-   🧾 OTHER CONTROLLERS
+   🧾 EXISTING CONTROLLERS
 --------------------------------------------------- */
 const getAllConsultations = async (req, res) => {
   try {
     const consultations = await Consultation.find().sort({ createdAt: -1 });
     res.status(200).json(consultations);
   } catch (err) {
-    console.error("❌ Error fetching consultations:", err);
     res.status(500).json({ message: 'Failed to retrieve consultations' });
   }
 };
@@ -152,8 +110,7 @@ const markConsultationCompleted = async (req, res) => {
     const consultation = await Consultation.findByIdAndUpdate(id, { isCompleted }, { new: true });
     if (!consultation) return res.status(404).json({ message: 'Consultation not found' });
     res.status(200).json(consultation);
-  } catch (err) {
-    console.error("❌ Error updating consultation:", err);
+  } catch {
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -162,19 +119,71 @@ const pendingBadge = async (req, res) => {
   try {
     const count = await Consultation.countDocuments({ isCompleted: false });
     res.json({ count });
-  } catch (err) {
-    console.error("❌ Error counting pending consultations:", err);
+  } catch {
     res.status(500).json({ error: "Failed to get count" });
   }
 };
 
 const cleanupOldConsultations = async (req, res) => {
   try {
-    const result = await Consultation.updateMany({ isCompleted: { $exists: false } }, { $set: { isCompleted: false } });
+    const result = await Consultation.updateMany(
+      { isCompleted: { $exists: false } },
+      { $set: { isCompleted: false } }
+    );
     res.json({ updated: result.modifiedCount });
-  } catch (err) {
-    console.error("❌ Cleanup error:", err);
+  } catch {
     res.status(500).json({ error: "Cleanup failed" });
+  }
+};
+
+/* ---------------------------------------------------
+   🆕 NEW CONTROLLERS (Delete, Clear All, Pagination)
+--------------------------------------------------- */
+
+// 🔹 Delete consultation by ID
+const deleteConsultationById = async (req, res) => {
+  try {
+    const deleted = await Consultation.findByIdAndDelete(req.params.id);
+    if (!deleted) return res.status(404).json({ message: 'Consultation not found' });
+    res.json({ message: 'Consultation deleted successfully.' });
+  } catch (err) {
+    console.error("❌ Delete error:", err);
+    res.status(500).json({ message: 'Failed to delete consultation' });
+  }
+};
+
+// 🔹 Clear all consultations
+const clearAllConsultations = async (req, res) => {
+  try {
+    const result = await Consultation.deleteMany({});
+    res.json({ message: 'All consultations deleted successfully.', deletedCount: result.deletedCount });
+  } catch (err) {
+    console.error("❌ Clear all error:", err);
+    res.status(500).json({ message: 'Failed to clear consultations' });
+  }
+};
+
+// 🔹 Paginated consultations (20 per page)
+const getConsultationsPaginated = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = 20;
+    const skip = (page - 1) * limit;
+
+    const [consultations, total] = await Promise.all([
+      Consultation.find().sort({ createdAt: -1 }).skip(skip).limit(limit),
+      Consultation.countDocuments()
+    ]);
+
+    res.json({
+      consultations,
+      currentPage: page,
+      totalPages: Math.ceil(total / limit),
+      totalConsultations: total
+    });
+  } catch (err) {
+    console.error("❌ Pagination error:", err);
+    res.status(500).json({ message: 'Failed to fetch paginated consultations' });
   }
 };
 
@@ -187,5 +196,8 @@ module.exports = {
   getAllConsultations,
   markConsultationCompleted,
   pendingBadge,
-  cleanupOldConsultations
+  cleanupOldConsultations,
+  deleteConsultationById,
+  clearAllConsultations,
+  getConsultationsPaginated
 };

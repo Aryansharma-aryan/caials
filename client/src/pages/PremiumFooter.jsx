@@ -232,7 +232,7 @@ const PremiumFooter = () => {
                     Fremont Office (Head Office)
                   </h5>
                   <p className="text-blue-100 text-sm mb-2">
-                    4127 Bay Street, Suite 5<br />Fremont, CA 94538
+                    2450 Peralta Blvd, Suit #107<br />Fremont, CA 94536
                   </p>
                 </div>
 

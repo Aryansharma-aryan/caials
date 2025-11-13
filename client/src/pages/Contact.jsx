@@ -37,8 +37,8 @@ const Contact = () => {
     {
       icon: <MapPin className="w-6 h-6" />,
       title: "Fremont Office (Head Office)",
-      content: "4127 Bay Street, Suite 5",
-      subContent: "Fremont, CA 94538",
+      content: "2450 Peralta Blvd, Suit #107",
+      subContent: "Fremont, CA 94536",
       bgColor: "bg-indigo-100",
       iconColor: "text-indigo-600",
       coordinates: "37.5485,-121.9886"
