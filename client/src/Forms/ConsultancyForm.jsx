@@ -14,6 +14,8 @@ const ConsultancyForm = () => {
     message: '',
   });
 
+  const [loading, setLoading] = useState(false);
+
   const visaTypes = [
     'Study Visa', 'Tourist Visa', 'Work Visa', 'PR / Immigration',
     'Spouse Visa', 'Dependent Visa', 'Visitor Visa', 'Investor / Business Visa',
@@ -32,18 +34,39 @@ const ConsultancyForm = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const validateForm = () => {
+    const { fullName, email, phone, countryOfInterest, visaType, contactMethod } = formData;
+    if (!fullName || !email || !phone || !countryOfInterest || !visaType || !contactMethod) {
+      alert('❌ Please fill all required fields.');
+      return false;
+    }
+    const nameRegex = /^[A-Za-z\s.'-]+$/;
+    if (!nameRegex.test(fullName)) {
+      alert('❌ Full name contains invalid characters.');
+      return false;
+    }
+    const phoneRegex = /^\d{7,15}$/;
+    if (!phoneRegex.test(phone)) {
+      alert('❌ Phone number must be 7-15 digits.');
+      return false;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      alert('❌ Email is invalid.');
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
 
-    // Minimal front-end validation
-    if (!formData.fullName || !formData.email || !formData.phone || !formData.countryOfInterest || !formData.visaType || !formData.contactMethod) {
-      alert('❌ Please fill all required fields.');
-      return;
-    }
-
+    setLoading(true);
     try {
       const res = await axios.post('https://caials-ebon.onrender.com/api/consult', formData);
-      alert('✅ Consultation submitted successfully!',res);
+      console.log('✅ Submission response:', res.data);
+      alert('✅ Consultation submitted successfully!');
       setFormData({
         fullName: '',
         email: '',
@@ -56,8 +79,12 @@ const ConsultancyForm = () => {
         message: '',
       });
     } catch (error) {
-      console.error('Submission error:', error.response || error);
-      alert('❌ Something went wrong. Please try again.');
+      console.error('❌ Submission error:', error.response || error);
+      const backendMsg = error.response?.data?.errors?.map(e => e.msg).join('\n') 
+                        || error.response?.data?.message;
+      alert(backendMsg || '❌ Something went wrong. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -94,6 +121,8 @@ const ConsultancyForm = () => {
               type="tel"
               name="phone"
               placeholder="Phone Number"
+              pattern="\d{7,15}"
+              title="Phone number must be 7-15 digits"
               value={formData.phone}
               onChange={handleChange}
               required
@@ -177,9 +206,12 @@ const ConsultancyForm = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full py-3 text-white font-semibold bg-gradient-to-r from-indigo-500 to-teal-500 rounded-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
+            disabled={loading}
+            className={`w-full py-3 text-white font-semibold bg-gradient-to-r from-indigo-500 to-teal-500 rounded-lg hover:shadow-xl transition-all duration-300 ${
+              loading ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'
+            }`}
           >
-            🚀 Submit Request
+            {loading ? 'Submitting...' : '🚀 Submit Request'}
           </button>
         </form>
       </div>
