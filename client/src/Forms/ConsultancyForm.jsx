@@ -67,7 +67,9 @@ const ConsultancyForm = () => {
     setLoading(true);
     try {
       const res = await axios.post('https://caials-ebon.onrender.com/api/consult', formData, {
+
         headers: { 'Content-Type': 'application/json' }
+        
       });
       toast.success('✅ Consultation submitted successfully!');
       setFormData({
