@@ -72,10 +72,20 @@ const validateConsultation = [
     .notEmpty()
     .isIn(["Email", "Phone", "WhatsApp"])
     .withMessage("Invalid contact method."),
-  body("preferredDate")
-    .optional({ checkFalsy: true })
-    .isISO8601()
-    .withMessage("Preferred date must be valid (YYYY-MM-DD)."),
+ body("preferredDate")
+  .optional({ checkFalsy: true })
+  .isISO8601()
+  .withMessage("Preferred date must be valid (YYYY-MM-DD).")
+  .custom((value) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Reset time
+    const selectedDate = new Date(value);
+    if (selectedDate < today) {
+      throw new Error("Preferred date cannot be in the past.");
+    }
+    return true;
+  }),
+
   body("purpose")
     .optional({ checkFalsy: true })
     .trim()
