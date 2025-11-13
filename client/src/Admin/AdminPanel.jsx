@@ -11,7 +11,7 @@ const AdminPanel = () => {
   const [queries, setQueries] = useState([]);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
-  const limit = 20;
+  const limit = 50; // ✅ 50 consultations per page
 
   const fetchQueries = async (currentPage = 1) => {
     try {
@@ -22,9 +22,12 @@ const AdminPanel = () => {
         return;
       }
 
-      const res = await axios.get(`${API_URL}/getConsultation/paginated/list?page=${currentPage}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await axios.get(
+        `${API_URL}/getConsultation/paginated/list?page=${currentPage}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
       setQueries(res.data.consultations);
       setTotal(res.data.total);
@@ -95,6 +98,7 @@ const AdminPanel = () => {
         transition={{ duration: 0.8 }}
         className="max-w-7xl mx-auto bg-white/70 backdrop-blur-lg shadow-2xl rounded-3xl border border-white/30 p-10"
       >
+        {/* Header */}
         <div className="text-center mb-10">
           <h1 className="text-5xl font-extrabold text-indigo-900 drop-shadow-sm">
             Hi Rosy 👋
@@ -104,6 +108,7 @@ const AdminPanel = () => {
           </p>
         </div>
 
+        {/* Top Bar */}
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-semibold text-indigo-700">
             Total Consultations: {total}
@@ -116,6 +121,7 @@ const AdminPanel = () => {
           </button>
         </div>
 
+        {/* Table */}
         <div className="overflow-x-auto rounded-2xl shadow-lg border border-gray-200">
           <table className="w-full text-sm text-left text-gray-700">
             <thead className="bg-indigo-600 text-white text-xs uppercase tracking-wide">
@@ -149,7 +155,9 @@ const AdminPanel = () => {
                         : "bg-gray-50 hover:bg-indigo-50"
                     }`}
                   >
-                    <td className="px-3 py-2 font-semibold text-gray-500">{(page - 1) * limit + index + 1}</td>
+                    <td className="px-3 py-2 font-semibold text-gray-500">
+                      {(page - 1) * limit + index + 1}
+                    </td>
                     <td className="px-3 py-2 font-medium">{q.fullName}</td>
                     <td className="px-3 py-2">{q.phone}</td>
                     <td className="px-3 py-2">{q.visaType}</td>
@@ -195,31 +203,31 @@ const AdminPanel = () => {
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="flex justify-center items-center mt-8 space-x-3">
+          <div className="flex justify-center items-center mt-10 space-x-4">
             <button
               onClick={() => fetchQueries(page - 1)}
               disabled={page === 1}
-              className={`px-4 py-2 rounded-lg border ${
+              className={`flex items-center gap-2 px-5 py-2 rounded-full border font-medium transition ${
                 page === 1
                   ? "bg-gray-200 text-gray-400 cursor-not-allowed"
                   : "bg-indigo-600 text-white hover:bg-indigo-700"
               }`}
             >
-              Prev
+              ← Prev
             </button>
-            <span className="font-semibold text-indigo-800">
+            <span className="font-semibold text-indigo-800 text-lg">
               Page {page} of {totalPages}
             </span>
             <button
               onClick={() => fetchQueries(page + 1)}
               disabled={page === totalPages}
-              className={`px-4 py-2 rounded-lg border ${
+              className={`flex items-center gap-2 px-5 py-2 rounded-full border font-medium transition ${
                 page === totalPages
                   ? "bg-gray-200 text-gray-400 cursor-not-allowed"
                   : "bg-indigo-600 text-white hover:bg-indigo-700"
               }`}
             >
-              Next
+              Next →
             </button>
           </div>
         )}

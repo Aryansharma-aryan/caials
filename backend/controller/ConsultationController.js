@@ -167,7 +167,7 @@ const clearAllConsultations = async (req, res) => {
 const getConsultationsPaginated = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
-    const limit = 20;
+    const limit = 1000;
     const skip = (page - 1) * limit;
 
     const [consultations, total] = await Promise.all([
