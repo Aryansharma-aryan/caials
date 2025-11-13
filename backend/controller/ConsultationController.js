@@ -3,7 +3,6 @@ const Consultation = require('../models/Consultation');
 const nodemailer = require('nodemailer');
 require('dotenv').config();
 
-<<<<<<< HEAD
 /* -------------------------------------------------------
    ⚙️ INITIALIZE GMAIL TRANSPORTER (REUSABLE & VERIFIED)
 ---------------------------------------------------------- */
@@ -35,18 +34,6 @@ let transporter;
 /* -------------------------------------------------------
    📧 EMAIL TEMPLATE (HTML)
 ---------------------------------------------------------- */
-=======
-/* ------------------- 🔧 GMAIL TRANSPORTER ------------------- */
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER, // your gmail
-    pass: process.env.EMAIL_PASS  // your app password
-  }
-});
-
-/* ------------------- 📧 EMAIL TEMPLATE ------------------- */
->>>>>>> 057153f4df17be7f9f06c08c0787213156ccf036
 function buildConsultationHtml(consult) {
   return `
     <h2>📬 New Consultation Request</h2>
@@ -65,13 +52,9 @@ function buildConsultationHtml(consult) {
   `;
 }
 
-<<<<<<< HEAD
 /* -------------------------------------------------------
    🧾 VALIDATION RULES
 ---------------------------------------------------------- */
-=======
-/* ------------------- 🧾 VALIDATION RULES ------------------- */
->>>>>>> 057153f4df17be7f9f06c08c0787213156ccf036
 const validateConsultation = [
   body('fullName')
     .trim().notEmpty().withMessage('Full name is required.')
@@ -80,11 +63,7 @@ const validateConsultation = [
     .trim().isEmail().withMessage('Enter a valid email address.').normalizeEmail(),
   body('phone')
     .trim().isNumeric().withMessage('Phone must contain only numbers.')
-<<<<<<< HEAD
     .isLength({ min: 7, max: 15 }).withMessage('Phone number must be 7–15 digits.'),
-=======
-    .isLength({ min: 7, max: 15 }).withMessage('Phone number length must be between 7 and 15 digits.'),
->>>>>>> 057153f4df17be7f9f06c08c0787213156ccf036
   body('countryOfInterest').trim().notEmpty().withMessage('Country is required.'),
   body('visaType').trim().notEmpty().withMessage('Visa type is required.'),
   body('contactMethod')
@@ -97,13 +76,9 @@ const validateConsultation = [
     .isLength({ max: 500 }).withMessage('Message too long (max 500 chars).')
 ];
 
-<<<<<<< HEAD
 /* -------------------------------------------------------
    🚀 CREATE CONSULTATION (FAST + RELIABLE)
 ---------------------------------------------------------- */
-=======
-/* ------------------- ⚡ CREATE CONSULTATION (FAST) ------------------- */
->>>>>>> 057153f4df17be7f9f06c08c0787213156ccf036
 const createConsultation = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty())
@@ -113,7 +88,6 @@ const createConsultation = async (req, res) => {
     const consultData = req.body;
     const newConsultation = await Consultation.create(consultData);
 
-<<<<<<< HEAD
     // ✅ respond instantly to frontend
     res.status(201).json({
       success: true,
@@ -139,37 +113,12 @@ const createConsultation = async (req, res) => {
         console.log(`✅ Email sent successfully for ${newConsultation.fullName}`);
       } catch (emailErr) {
         console.error('❌ Email send error:', emailErr.message);
-=======
-    // ✅ Respond instantly to user
-    res.status(201).json({
-      success: true,
-      message: 'Your consultation has been submitted successfully. We’ll get back to you soon!'
-    });
-
-    // ✅ Send email asynchronously in background
-    setImmediate(async () => {
-      try {
-        await transporter.sendMail({
-          from: `"CAIALS" <${process.env.EMAIL_USER}>`,
-          to: process.env.ADMIN_RECIPIENT,
-          subject: `📬 New Consultation from ${newConsultation.fullName}`,
-          html: buildConsultationHtml(newConsultation),
-          replyTo: newConsultation.email
-        });
-        console.log('✅ Email sent successfully in background');
-      } catch (emailErr) {
-        console.error('❌ Email sending failed:', emailErr.message);
->>>>>>> 057153f4df17be7f9f06c08c0787213156ccf036
       }
     });
 
   } catch (err) {
     console.error('❌ Backend error:', err.message);
-<<<<<<< HEAD
     res.status(500).json({ message: 'Something went wrong. Please try again later.' });
-=======
-    res.status(500).json({ message: 'Something went wrong, please try again later.' });
->>>>>>> 057153f4df17be7f9f06c08c0787213156ccf036
   }
 };
 
@@ -192,12 +141,7 @@ const markConsultationCompleted = async (req, res) => {
       { isCompleted: req.body.isCompleted },
       { new: true }
     );
-<<<<<<< HEAD
     if (!consultation) return res.status(404).json({ message: 'Consultation not found' });
-=======
-    if (!consultation)
-      return res.status(404).json({ message: 'Consultation not found' });
->>>>>>> 057153f4df17be7f9f06c08c0787213156ccf036
     res.status(200).json(consultation);
   } catch {
     res.status(500).json({ message: 'Server error' });
@@ -241,11 +185,7 @@ const clearAllConsultations = async (req, res) => {
     const result = await Consultation.deleteMany({});
     res.json({
       message: 'All consultations deleted successfully.',
-<<<<<<< HEAD
       deletedCount: result.deletedCount,
-=======
-      deletedCount: result.deletedCount
->>>>>>> 057153f4df17be7f9f06c08c0787213156ccf036
     });
   } catch {
     res.status(500).json({ message: 'Failed to clear consultations' });
