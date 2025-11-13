@@ -66,8 +66,6 @@ const ConsultancyForm = () => {
 
     setLoading(true);
     try {
-
-      // ✅ Short network timeout (avoid hanging on Render)
       const res = await axios.post(
         'https://caials-ebon.onrender.com/api/consult',
         formData,
@@ -79,13 +77,7 @@ const ConsultancyForm = () => {
 
       toast.success(res.data?.message || '✅ Consultation submitted successfully!');
 
-      const res = await axios.post('https://caials-ebon.onrender.com/api/consult', formData, {
-
-        headers: { 'Content-Type': 'application/json' }
-        
-      });
-      toast.success('✅ Consultation submitted successfully!');
- 
+      // Reset form after successful submission
       setFormData({
         fullName: '',
         email: '',
@@ -118,24 +110,72 @@ const ConsultancyForm = () => {
           Book Your <span className="text-teal-600">Free Consultation</span>
         </h2>
         <form onSubmit={handleSubmit} className="space-y-6 animate-fade-up">
-          <input type="text" name="fullName" placeholder="Full Name" value={formData.fullName} onChange={handleChange} required className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-400 focus:outline-none transition" />
-          
+          <input
+            type="text"
+            name="fullName"
+            placeholder="Full Name"
+            value={formData.fullName}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-400 focus:outline-none transition"
+          />
+
           <div className="flex gap-4">
-            <input type="email" name="email" placeholder="Email Address" value={formData.email} onChange={handleChange} required className="w-1/2 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-400 transition" />
-            <input type="tel" name="phone" placeholder="Phone Number" pattern="\d{7,15}" title="Phone number must be 7-15 digits" value={formData.phone} onChange={handleChange} required className="w-1/2 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-400 transition" />
+            <input
+              type="email"
+              name="email"
+              placeholder="Email Address"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              className="w-1/2 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-400 transition"
+            />
+            <input
+              type="tel"
+              name="phone"
+              placeholder="Phone Number"
+              pattern="\d{7,15}"
+              title="Phone number must be 7-15 digits"
+              value={formData.phone}
+              onChange={handleChange}
+              required
+              className="w-1/2 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-400 transition"
+            />
           </div>
 
-          <select name="countryOfInterest" value={formData.countryOfInterest} onChange={handleChange} required className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white focus:ring-2 focus:ring-indigo-400">
+          <select
+            name="countryOfInterest"
+            value={formData.countryOfInterest}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white focus:ring-2 focus:ring-indigo-400"
+          >
             <option value="">Select Country of Interest</option>
-            {countries.map((c, i) => <option key={i} value={c}>{c}</option>)}
+            {countries.map((c, i) => (
+              <option key={i} value={c}>{c}</option>
+            ))}
           </select>
 
-          <select name="visaType" value={formData.visaType} onChange={handleChange} required className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white focus:ring-2 focus:ring-indigo-400">
+          <select
+            name="visaType"
+            value={formData.visaType}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white focus:ring-2 focus:ring-indigo-400"
+          >
             <option value="">Select Visa Type</option>
-            {visaTypes.map((v, i) => <option key={i} value={v}>{v}</option>)}
+            {visaTypes.map((v, i) => (
+              <option key={i} value={v}>{v}</option>
+            ))}
           </select>
 
-          <select name="contactMethod" value={formData.contactMethod} onChange={handleChange} required className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white focus:ring-2 focus:ring-indigo-400">
+          <select
+            name="contactMethod"
+            value={formData.contactMethod}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white focus:ring-2 focus:ring-indigo-400"
+          >
             <option value="">Preferred Contact Method</option>
             <option value="Phone">Phone</option>
             <option value="WhatsApp">WhatsApp</option>
@@ -149,6 +189,7 @@ const ConsultancyForm = () => {
             onChange={handleChange}
             className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-400 transition"
           />
+
           <input
             type="text"
             name="purpose"
@@ -158,6 +199,7 @@ const ConsultancyForm = () => {
             onChange={handleChange}
             className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-400"
           />
+
           <textarea
             name="message"
             placeholder="Additional Message (Optional)"
