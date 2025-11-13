@@ -10,7 +10,8 @@ const {
   cleanupOldConsultations,
   deleteConsultationById,
   clearAllConsultations,
-  getConsultationsPaginated
+  getConsultationsPaginated,
+  validateConsultation
 } = require('../controller/ConsultationController');
 
 const { loginAdmin, verifyAdmin } = require('../controller/AdminController');
@@ -19,7 +20,7 @@ const { loginAdmin, verifyAdmin } = require('../controller/AdminController');
 router.post('/admin/login', loginAdmin);
 
 // 💬 Consultation routes
-router.post('/consult', createConsultation);
+router.post('/consult',validateConsultation, createConsultation);
 
 // 🧾 Fetch all consultations (admin-protected)
 router.get('/getConsultation', verifyAdmin, getAllConsultations);
