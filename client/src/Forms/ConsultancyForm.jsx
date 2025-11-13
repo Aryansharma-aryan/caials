@@ -66,6 +66,7 @@ const ConsultancyForm = () => {
 
     setLoading(true);
     try {
+<<<<<<< HEAD
       // ✅ Short network timeout (avoid hanging on Render)
       const res = await axios.post(
         'https://caials-ebon.onrender.com/api/consult',
@@ -77,6 +78,14 @@ const ConsultancyForm = () => {
       );
 
       toast.success(res.data?.message || '✅ Consultation submitted successfully!');
+=======
+      const res = await axios.post('https://caials-ebon.onrender.com/api/consult', formData, {
+
+        headers: { 'Content-Type': 'application/json' }
+        
+      });
+      toast.success('✅ Consultation submitted successfully!');
+>>>>>>> 057153f4df17be7f9f06c08c0787213156ccf036
       setFormData({
         fullName: '',
         email: '',
@@ -89,6 +98,7 @@ const ConsultancyForm = () => {
         message: '',
       });
     } catch (error) {
+<<<<<<< HEAD
       console.error('Submission error:', error);
       if (error.code === 'ECONNABORTED') {
         toast.error('⚠️ Server took too long to respond. Please try again later.');
@@ -96,6 +106,11 @@ const ConsultancyForm = () => {
         const backendMsg = error.response?.data?.message || '❌ Something went wrong. Please try again.';
         toast.error(backendMsg);
       }
+=======
+      console.error('Submission error:', error.response || error);
+      const backendMsg = error.response?.data?.message || '❌ Something went wrong. Please try again.';
+      toast.error(backendMsg);
+>>>>>>> 057153f4df17be7f9f06c08c0787213156ccf036
     } finally {
       setLoading(false);
     }
@@ -105,87 +120,35 @@ const ConsultancyForm = () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-teal-100 flex items-center justify-center px-4 py-10">
       <ToastContainer position="top-right" autoClose={3000} />
       <div className="w-full max-w-3xl p-8 sm:p-10 bg-white/60 backdrop-blur-md rounded-2xl shadow-2xl transition-all duration-300">
-        <h2 className="text-4xl font-extrabold text-center text-indigo-800 mb-6">
+        <h2 className="text-4xl font-extrabold text-center text-indigo-800 mb-6 animate-fade-in">
           Book Your <span className="text-teal-600">Free Consultation</span>
         </h2>
-
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <input
-            type="text"
-            name="fullName"
-            placeholder="Full Name"
-            value={formData.fullName}
-            onChange={handleChange}
-            required
-            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-400 focus:outline-none transition"
-          />
-
+        <form onSubmit={handleSubmit} className="space-y-6 animate-fade-up">
+          <input type="text" name="fullName" placeholder="Full Name" value={formData.fullName} onChange={handleChange} required className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-400 focus:outline-none transition" />
+          
           <div className="flex gap-4">
-            <input
-              type="email"
-              name="email"
-              placeholder="Email Address"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              className="w-1/2 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-400 transition"
-            />
-            <input
-              type="tel"
-              name="phone"
-              placeholder="Phone Number"
-              pattern="\d{7,15}"
-              title="Phone number must be 7-15 digits"
-              value={formData.phone}
-              onChange={handleChange}
-              required
-              className="w-1/2 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-400 transition"
-            />
+            <input type="email" name="email" placeholder="Email Address" value={formData.email} onChange={handleChange} required className="w-1/2 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-400 transition" />
+            <input type="tel" name="phone" placeholder="Phone Number" pattern="\d{7,15}" title="Phone number must be 7-15 digits" value={formData.phone} onChange={handleChange} required className="w-1/2 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-400 transition" />
           </div>
 
-          <select
-            name="countryOfInterest"
-            value={formData.countryOfInterest}
-            onChange={handleChange}
-            required
-            className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white focus:ring-2 focus:ring-indigo-400"
-          >
+          <select name="countryOfInterest" value={formData.countryOfInterest} onChange={handleChange} required className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white focus:ring-2 focus:ring-indigo-400">
             <option value="">Select Country of Interest</option>
-            {countries.map((c, i) => (
-              <option key={i} value={c}>
-                {c}
-              </option>
-            ))}
+            {countries.map((c, i) => <option key={i} value={c}>{c}</option>)}
           </select>
 
-          <select
-            name="visaType"
-            value={formData.visaType}
-            onChange={handleChange}
-            required
-            className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white focus:ring-2 focus:ring-indigo-400"
-          >
+          <select name="visaType" value={formData.visaType} onChange={handleChange} required className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white focus:ring-2 focus:ring-indigo-400">
             <option value="">Select Visa Type</option>
-            {visaTypes.map((v, i) => (
-              <option key={i} value={v}>
-                {v}
-              </option>
-            ))}
+            {visaTypes.map((v, i) => <option key={i} value={v}>{v}</option>)}
           </select>
 
-          <select
-            name="contactMethod"
-            value={formData.contactMethod}
-            onChange={handleChange}
-            required
-            className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white focus:ring-2 focus:ring-indigo-400"
-          >
+          <select name="contactMethod" value={formData.contactMethod} onChange={handleChange} required className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white focus:ring-2 focus:ring-indigo-400">
             <option value="">Preferred Contact Method</option>
             <option value="Phone">Phone</option>
             <option value="WhatsApp">WhatsApp</option>
             <option value="Email">Email</option>
           </select>
 
+<<<<<<< HEAD
           <input
             type="date"
             name="preferredDate"
@@ -219,6 +182,13 @@ const ConsultancyForm = () => {
               loading ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'
             }`}
           >
+=======
+          <input type="date" name="preferredDate" value={formData.preferredDate} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-400 transition" />
+          <input type="text" name="purpose" placeholder="Purpose of Consultation" maxLength="200" value={formData.purpose} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-400" />
+          <textarea name="message" placeholder="Additional Message (Optional)" maxLength="500" value={formData.message} onChange={handleChange} rows="4" className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-400" />
+
+          <button type="submit" disabled={loading} className={`w-full py-3 text-white font-semibold bg-gradient-to-r from-indigo-500 to-teal-500 rounded-lg transition-all duration-300 ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'}`}>
+>>>>>>> 057153f4df17be7f9f06c08c0787213156ccf036
             {loading ? 'Submitting...' : '🚀 Submit Request'}
           </button>
         </form>
