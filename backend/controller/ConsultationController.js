@@ -1,25 +1,98 @@
+const { body, validationResult } = require('express-validator');
 const Consultation = require('../models/Consultation');
+const nodemailer = require('nodemailer');
+require('dotenv').config();
 
-// @desc    Create a new consultation request
-// @route   POST /api/consultation
-// @access  Public
+const ADMIN_RECIPIENT = process.env.ADMIN_RECIPIENT || process.env.EMAIL_USER;
+
+// --- Configure transporter ---
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS }
+});
+
+transporter.verify()
+  .then(() => console.log("✅ Gmail transporter ready"))
+  .catch(err => console.error("❌ Transporter verify failed:", err.message));
+
+// --- Email template ---
+function buildConsultationHtml(consult) {
+  return `
+    <h2>New Consultation Request</h2>
+    <table cellpadding="6" cellspacing="0" style="border-collapse:collapse">
+      <tr><td><strong>Name:</strong></td><td>${consult.fullName}</td></tr>
+      <tr><td><strong>Email:</strong></td><td>${consult.email}</td></tr>
+      <tr><td><strong>Phone:</strong></td><td>${consult.phone}</td></tr>
+      <tr><td><strong>Country:</strong></td><td>${consult.countryOfInterest}</td></tr>
+      <tr><td><strong>Visa Type:</strong></td><td>${consult.visaType}</td></tr>
+      <tr><td><strong>Contact Method:</strong></td><td>${consult.contactMethod}</td></tr>
+      <tr><td><strong>Preferred Date:</strong></td><td>${consult.preferredDate || 'Not provided'}</td></tr>
+      <tr><td><strong>Purpose:</strong></td><td>${consult.purpose || 'Not provided'}</td></tr>
+      <tr><td><strong>Message:</strong></td><td>${consult.message || 'Not provided'}</td></tr>
+      <tr><td><strong>Submitted At:</strong></td><td>${new Date(consult.createdAt).toLocaleString()}</td></tr>
+    </table>
+  `;
+}
+
+/* ---------------------------------------------------
+   ✅ VALIDATION MIDDLEWARE (using express-validator)
+--------------------------------------------------- */
+const validateConsultation = [
+  body('fullName')
+    .trim()
+    .notEmpty().withMessage('Full name is required.')
+    .matches(/^[A-Za-z\s.'-]+$/).withMessage('Full name contains invalid characters.'),
+  
+  body('email')
+    .trim()
+    .isEmail().withMessage('Enter a valid email address.')
+    .normalizeEmail(),
+  
+  body('phone')
+    .trim()
+    .isNumeric().withMessage('Phone must contain only numbers.')
+    .isLength({ min: 7, max: 15 }).withMessage('Phone number length must be between 7 and 15 digits.'),
+  
+  body('countryOfInterest')
+    .trim()
+    .notEmpty().withMessage('Country is required.'),
+  
+  body('visaType')
+    .trim()
+    .notEmpty().withMessage('Visa type is required.'),
+  
+  body('contactMethod')
+    .trim()
+    .notEmpty().withMessage('Contact method is required.')
+    .isIn(['Email', 'Phone', 'WhatsApp']).withMessage('Invalid contact method.'),
+  
+  body('preferredDate')
+    .optional({ checkFalsy: true })
+    .isISO8601().withMessage('Preferred date must be a valid date (YYYY-MM-DD).'),
+  
+  body('purpose')
+    .optional({ checkFalsy: true })
+    .trim()
+    .isLength({ max: 200 }).withMessage('Purpose is too long (max 200 chars).'),
+  
+  body('message')
+    .optional({ checkFalsy: true })
+    .trim()
+    .isLength({ max: 500 }).withMessage('Message is too long (max 500 chars).')
+];
+
+/* ---------------------------------------------------
+   📨 CREATE CONSULTATION + SEND EMAIL
+--------------------------------------------------- */
 const createConsultation = async (req, res) => {
-  try {
-    const {
-      fullName,
-      email,
-      phone,
-      countryOfInterest,
-      visaType,
-      contactMethod,
-      preferredDate,
-      purpose,
-      message,
-    } = req.body;
+  // ✅ Check validation errors
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
 
-    if (!fullName || !email || !phone || !countryOfInterest || !visaType || !contactMethod) {
-      return res.status(400).json({ message: 'Please fill in all required fields.' });
-    }
+  try {
+    const { fullName, email, phone, countryOfInterest, visaType, contactMethod, preferredDate, purpose, message } = req.body;
 
     const newConsultation = new Consultation({
       fullName,
@@ -30,80 +103,89 @@ const createConsultation = async (req, res) => {
       contactMethod,
       preferredDate,
       purpose,
-      message,
-      isCompleted: false, // ✅ explicitly set
+      message
     });
 
     await newConsultation.save();
-    res.status(201).json({ message: 'Consultation submitted successfully.' });
-  } catch (error) {
-    console.error('Error saving consultation:', error);
-    res.status(500).json({ message: 'Server Error. Please try again later.' });
+
+    // --- Send email ---
+    const mailOptions = {
+      from: `"CAIALS Consultation" <${process.env.EMAIL_USER}>`,
+      to: ADMIN_RECIPIENT,
+      subject: `📬 New Consultation from ${fullName}`,
+      html: buildConsultationHtml(newConsultation),
+      replyTo: email
+    };
+
+    try {
+      const info = await transporter.sendMail(mailOptions);
+      console.log("✅ Email sent:", info.messageId);
+    } catch (mailErr) {
+      console.error("❌ Error sending email:", mailErr);
+    }
+
+    res.status(201).json({ message: "Consultation submitted successfully." });
+
+  } catch (err) {
+    console.error("❌ Error creating consultation:", err);
+    res.status(500).json({ message: "Server Error. Please try again later." });
   }
 };
 
-// @desc    Get all consultations
+/* ---------------------------------------------------
+   🧾 OTHER CONTROLLERS
+--------------------------------------------------- */
 const getAllConsultations = async (req, res) => {
   try {
     const consultations = await Consultation.find().sort({ createdAt: -1 });
     res.status(200).json(consultations);
   } catch (err) {
-    console.error("Error fetching consultations:", err);
+    console.error("❌ Error fetching consultations:", err);
     res.status(500).json({ message: 'Failed to retrieve consultations' });
   }
 };
 
-// @desc    Mark as completed/uncompleted
 const markConsultationCompleted = async (req, res) => {
   const { id } = req.params;
   const { isCompleted } = req.body;
-
   try {
-    const consultation = await Consultation.findByIdAndUpdate(
-      id,
-      { isCompleted },
-      { new: true }
-    );
-
-    if (!consultation) {
-      return res.status(404).json({ message: 'Consultation not found' });
-    }
-
+    const consultation = await Consultation.findByIdAndUpdate(id, { isCompleted }, { new: true });
+    if (!consultation) return res.status(404).json({ message: 'Consultation not found' });
     res.status(200).json(consultation);
-  } catch (error) {
-    console.error('Error updating consultation:', error);
+  } catch (err) {
+    console.error("❌ Error updating consultation:", err);
     res.status(500).json({ message: 'Server error' });
   }
 };
 
-// @desc    Get count of pending consultations
 const pendingBadge = async (req, res) => {
   try {
     const count = await Consultation.countDocuments({ isCompleted: false });
     res.json({ count });
-  } catch (error) {
-    console.error("Error counting pending consultations:", error);
+  } catch (err) {
+    console.error("❌ Error counting pending consultations:", err);
     res.status(500).json({ error: "Failed to get count" });
   }
 };
 
-// Optional: One-time DB cleanup for missing isCompleted field
 const cleanupOldConsultations = async (req, res) => {
   try {
-    const result = await Consultation.updateMany(
-      { isCompleted: { $exists: false } },
-      { $set: { isCompleted: false } }
-    );
+    const result = await Consultation.updateMany({ isCompleted: { $exists: false } }, { $set: { isCompleted: false } });
     res.json({ updated: result.modifiedCount });
   } catch (err) {
+    console.error("❌ Cleanup error:", err);
     res.status(500).json({ error: "Cleanup failed" });
   }
 };
 
+/* ---------------------------------------------------
+   📦 EXPORTS
+--------------------------------------------------- */
 module.exports = {
+  validateConsultation,
   createConsultation,
   getAllConsultations,
   markConsultationCompleted,
   pendingBadge,
-  cleanupOldConsultations, // optional route
+  cleanupOldConsultations
 };

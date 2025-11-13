@@ -25,7 +25,7 @@ export default function Navbar() {
 
       try {
         const res = await axios.get(
-          "http://localhost:5000/api/getConsultation/pendingCount",
+          "https://caials-ebon.onrender.com/api/getConsultation/pendingCount",
           {
             headers: {
               Authorization: `Bearer ${token}`,

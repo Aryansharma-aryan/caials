@@ -2,12 +2,42 @@
   "name": "Caials - Immigration, Study Abroad & Visa Services",
   "short_name": "Caials",
   "description": "Caials provides expert immigration consultancy, study abroad programs, visa assistance, and legal services. Trusted guidance to fulfill your international dreams.",
-  "start_url": "/",
+  "lang": "en",
+  "dir": "ltr",
+  "start_url": "/?source=pwa",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
   "theme_color": "#ffffff",
   "background_color": "#ffffff",
+  "categories": [
+    "education",
+    "consulting",
+    "travel",
+    "immigration",
+    "visa"
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/homepage.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "label": "Caials Home Page"
+    },
+    {
+      "src": "/screenshots/services.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "label": "Visa & Study Abroad Services"
+    }
+  ],
+  "related_applications": [
+    {
+      "platform": "webapp",
+      "url": "https://www.caials.com/"
+    }
+  ],
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "/android-chrome-192x192.png",

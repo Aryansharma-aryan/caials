@@ -8,7 +8,7 @@ export default function AdminLogin() {
   const [isSuccess, setIsSuccess] = useState(false);
 const handleSubmit = async (e) => {
   e.preventDefault();
-  setIsLoading(true);
+  setTimeout(() => setIsLoading(true), 100);
   setError("");
 
   try {
