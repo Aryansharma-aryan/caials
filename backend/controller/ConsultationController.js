@@ -3,21 +3,16 @@ const Consultation = require('../models/Consultation');
 const nodemailer = require('nodemailer');
 require('dotenv').config();
 
-const ADMIN_RECIPIENT = process.env.ADMIN_RECIPIENT || process.env.EMAIL_USER;
-
-// Nodemailer transporter with TLS fix for cloud deployment
+// ✅ Gmail Transporter Setup
 const transporter = nodemailer.createTransport({
   service: 'gmail',
-  auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS },
-  tls: { rejectUnauthorized: false } 
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
+  }
 });
 
-// Verify transporter
-transporter.verify()
-  .then(() => console.log("✅ Gmail transporter ready"))
-  .catch(err => console.error("❌ Transporter verify failed:", err.message));
-
-// Email HTML template
+// ✅ Email HTML Template
 function buildConsultationHtml(consult) {
   return `
     <h2>New Consultation Request</h2>
@@ -60,20 +55,20 @@ const createConsultation = async (req, res) => {
     const consultData = req.body;
     const newConsultation = await Consultation.create(consultData);
 
-    // Send email asynchronously (non-blocking)
-    transporter.sendMail({
-      from: `"CAIALS Consultation" <${process.env.EMAIL_USER}>`,
-      to: ADMIN_RECIPIENT,
+    // ✅ Send email using Gmail SMTP
+    await transporter.sendMail({
+      from: `"CAIALS" <${process.env.EMAIL_USER}>`,
+      to: process.env.ADMIN_RECIPIENT,
       subject: `📬 New Consultation from ${newConsultation.fullName}`,
       html: buildConsultationHtml(newConsultation),
       replyTo: newConsultation.email
-    }).then(info => console.log("✅ Email sent:", info.messageId))
-      .catch(mailErr => console.error("❌ Email failed:", mailErr.response || mailErr.message));
+    });
 
-    res.status(201).json({ message: "Consultation submitted successfully." });
+    console.log('✅ Email sent successfully via Gmail SMTP');
+    res.status(201).json({ message: 'Consultation submitted successfully.' });
   } catch (err) {
-    console.error("❌ Error creating consultation:", err.message);
-    res.status(500).json({ message: "Server Error. Please try again later." });
+    console.error('❌ Email or DB error:', err.message);
+    res.status(500).json({ message: 'Server error. Please try again later.' });
   }
 };
 
