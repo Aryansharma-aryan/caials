@@ -11,8 +11,9 @@ const AdminPanel = () => {
   const [queries, setQueries] = useState([]);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
-  const limit = 50;
+  const limit = 50; // Items per page
 
+  // Fetch paginated consultations
   const fetchQueries = async (currentPage = 1) => {
     try {
       const token = localStorage.getItem("adminToken");
@@ -28,7 +29,7 @@ const AdminPanel = () => {
       );
 
       setQueries(res.data.consultations);
-      setTotal(res.data.total);
+      setTotal(res.data.totalConsultations);
       setPage(currentPage);
     } catch (err) {
       console.error("Failed to fetch consultations:", err);
@@ -40,6 +41,7 @@ const AdminPanel = () => {
     fetchQueries();
   }, []);
 
+  // Toggle completion status
   const toggleCompletion = async (id, current) => {
     try {
       const token = localStorage.getItem("adminToken");
@@ -56,6 +58,7 @@ const AdminPanel = () => {
     }
   };
 
+  // Delete single consultation
   const deleteById = async (id) => {
     if (!window.confirm("Are you sure you want to delete this consultation?")) return;
     try {
@@ -71,6 +74,7 @@ const AdminPanel = () => {
     }
   };
 
+  // Clear all consultations
   const clearAll = async () => {
     if (!window.confirm("⚠️ Are you sure? This will delete ALL consultations permanently!")) return;
     try {
@@ -225,7 +229,7 @@ const AdminPanel = () => {
                   : "bg-indigo-600 text-white hover:bg-indigo-700"
               }`}
             >
-              Next →
+              Next → 
             </button>
           </div>
         )}
