@@ -33,7 +33,7 @@ const ConsultancyForm = () => {
   ];
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const validateForm = () => {
@@ -66,12 +66,17 @@ const ConsultancyForm = () => {
 
     setLoading(true);
     try {
-      const res = await axios.post('https://caials-ebon.onrender.com/api/consult', formData, {
-        headers: { 'Content-Type': 'application/json' },
-      });
+      // ✅ Short network timeout (avoid hanging on Render)
+      const res = await axios.post(
+        'https://caials-ebon.onrender.com/api/consult',
+        formData,
+        {
+          headers: { 'Content-Type': 'application/json' },
+          timeout: 15000, // 15 seconds max
+        }
+      );
 
-      toast.success(`✅ Consultation submitted successfully! Email sent to ${formData.email}`);
-
+      toast.success(res.data?.message || '✅ Consultation submitted successfully!');
       setFormData({
         fullName: '',
         email: '',
@@ -84,10 +89,13 @@ const ConsultancyForm = () => {
         message: '',
       });
     } catch (error) {
-      console.error('Submission error:', error.response || error);
-      const backendMsg =
-        error.response?.data?.message || '❌ Something went wrong. Please try again.';
-      toast.error(backendMsg);
+      console.error('Submission error:', error);
+      if (error.code === 'ECONNABORTED') {
+        toast.error('⚠️ Server took too long to respond. Please try again later.');
+      } else {
+        const backendMsg = error.response?.data?.message || '❌ Something went wrong. Please try again.';
+        toast.error(backendMsg);
+      }
     } finally {
       setLoading(false);
     }
@@ -95,7 +103,7 @@ const ConsultancyForm = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-teal-100 flex items-center justify-center px-4 py-10">
-      <ToastContainer position="top-right" autoClose={4000} />
+      <ToastContainer position="top-right" autoClose={3000} />
       <div className="w-full max-w-3xl p-8 sm:p-10 bg-white/60 backdrop-blur-md rounded-2xl shadow-2xl transition-all duration-300">
         <h2 className="text-4xl font-extrabold text-center text-indigo-800 mb-6">
           Book Your <span className="text-teal-600">Free Consultation</span>
@@ -185,7 +193,6 @@ const ConsultancyForm = () => {
             onChange={handleChange}
             className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-400 transition"
           />
-
           <input
             type="text"
             name="purpose"
@@ -195,7 +202,6 @@ const ConsultancyForm = () => {
             onChange={handleChange}
             className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-400"
           />
-
           <textarea
             name="message"
             placeholder="Additional Message (Optional)"
