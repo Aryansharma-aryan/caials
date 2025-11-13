@@ -10,25 +10,37 @@ require("dotenv").config();
 // ------------------------------------------------------
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-/* -------------------------------------------------------
-   📧 EMAIL TEMPLATE (HTML)
----------------------------------------------------------- */
+  //  📧 EMAIL TEMPLATE (HTML)
 const buildConsultationHtml = (consult) => `
-  <div style="font-family:Arial, sans-serif; line-height:1.6;">
-    <h2>📬 New Consultation Request</h2>
-    <table cellpadding="6" cellspacing="0" style="border-collapse:collapse;">
-      <tr><td><b>Name:</b></td><td>${consult.fullName}</td></tr>
-      <tr><td><b>Email:</b></td><td>${consult.email}</td></tr>
-      <tr><td><b>Phone:</b></td><td>${consult.phone}</td></tr>
-      <tr><td><b>Country of Interest:</b></td><td>${consult.countryOfInterest}</td></tr>
-      <tr><td><b>Visa Type:</b></td><td>${consult.visaType}</td></tr>
-      <tr><td><b>Contact Method:</b></td><td>${consult.contactMethod}</td></tr>
-      <tr><td><b>Preferred Date:</b></td><td>${consult.preferredDate || "Not provided"}</td></tr>
-      <tr><td><b>Purpose:</b></td><td>${consult.purpose || "Not provided"}</td></tr>
-      <tr><td><b>Message:</b></td><td>${consult.message || "Not provided"}</td></tr>
-      <tr><td><b>Submitted At:</b></td><td>${new Date(consult.createdAt).toLocaleString()}</td></tr>
-    </table>
-    <p style="margin-top:10px;color:#555;">— CAIALS System</p>
+  <div style="font-family: 'Arial', sans-serif; background-color:#f9f9f9; padding:30px;">
+    <div style="max-width:600px; margin:auto; background-color:#ffffff; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.1); overflow:hidden;">
+      
+      <!-- Personalized Greeting Header -->
+      <div style="background-color:#4a90e2; color:#ffffff; padding:20px; text-align:center;">
+        <h2 style="margin:0; font-size:20px;">Hello Rosy Mam,</h2>
+        <p style="margin:5px 0 0; font-size:16px;">Here is your new consultation request</p>
+      </div>
+      
+      <!-- Consultation Details Table -->
+      <table cellpadding="10" cellspacing="0" style="width:100%; border-collapse:collapse; font-size:14px; color:#333;">
+        <tr style="background-color:#f0f4f8;"><td style="font-weight:bold; width:40%;">Name:</td><td>${consult.fullName}</td></tr>
+        <tr><td style="font-weight:bold; background-color:#f0f4f8;">Email:</td><td>${consult.email}</td></tr>
+        <tr><td style="font-weight:bold;">Phone:</td><td>${consult.phone}</td></tr>
+        <tr style="background-color:#f0f4f8;"><td style="font-weight:bold;">Country of Interest:</td><td>${consult.countryOfInterest}</td></tr>
+        <tr><td style="font-weight:bold; background-color:#f0f4f8;">Visa Type:</td><td>${consult.visaType}</td></tr>
+        <tr><td style="font-weight:bold;">Contact Method:</td><td>${consult.contactMethod}</td></tr>
+        <tr style="background-color:#f0f4f8;"><td style="font-weight:bold;">Preferred Date:</td><td>${consult.preferredDate || "Not provided"}</td></tr>
+        <tr><td style="font-weight:bold;">Purpose:</td><td>${consult.purpose || "Not provided"}</td></tr>
+        <tr style="background-color:#f0f4f8;"><td style="font-weight:bold;">Message:</td><td>${consult.message || "Not provided"}</td></tr>
+        <tr><td style="font-weight:bold;">Submitted At:</td><td>${new Date(consult.createdAt).toLocaleString()}</td></tr>
+      </table>
+      
+      <!-- Footer -->
+      <div style="text-align:center; padding:15px; background-color:#f7f7f7; color:#777; font-size:12px;">
+        — CAIALS System
+      </div>
+      
+    </div>
   </div>
 `;
 
@@ -94,11 +106,11 @@ const createConsultation = async (req, res) => {
         "Your consultation has been submitted successfully. We’ll get back to you soon!",
     });
 
-    // ✅ Send email asynchronously using Resend
-    process.nextTick(async () => {
+    // ✅ Send email asynchronously using Resend default email
+    (async () => {
       try {
         await resend.emails.send({
-     from: "CAIALS <onboarding@resend.dev>",
+          from: "CAIALS <onboarding@resend.dev>",  // default verified email
           to: process.env.ADMIN_RECIPIENT,
           subject: `📩 New Consultation from ${newConsultation.fullName}`,
           html: buildConsultationHtml(newConsultation),
@@ -108,7 +120,7 @@ const createConsultation = async (req, res) => {
       } catch (emailErr) {
         console.error("❌ Resend email error:", emailErr.message);
       }
-    });
+    })();
   } catch (err) {
     console.error("❌ Backend error:", err.message);
     res.status(500).json({
@@ -123,9 +135,10 @@ const createConsultation = async (req, res) => {
 ---------------------------------------------------------- */
 const getAllConsultations = async (req, res) => {
   try {
-    const consultations = await Consultation.find().sort({ createdAt: -1 });
+    const consultations = await Consultation.find().sort({ createdAt: -1 }).lean();
     res.status(200).json(consultations);
-  } catch {
+  } catch (err) {
+    console.error(err);
     res.status(500).json({ message: "Failed to retrieve consultations" });
   }
 };
@@ -140,7 +153,8 @@ const markConsultationCompleted = async (req, res) => {
     if (!consultation)
       return res.status(404).json({ message: "Consultation not found" });
     res.status(200).json(consultation);
-  } catch {
+  } catch (err) {
+    console.error(err);
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -149,7 +163,8 @@ const pendingBadge = async (req, res) => {
   try {
     const count = await Consultation.countDocuments({ isCompleted: false });
     res.json({ count });
-  } catch {
+  } catch (err) {
+    console.error(err);
     res.status(500).json({ error: "Failed to get count" });
   }
 };
@@ -161,7 +176,8 @@ const cleanupOldConsultations = async (req, res) => {
       { $set: { isCompleted: false } }
     );
     res.json({ updated: result.modifiedCount });
-  } catch {
+  } catch (err) {
+    console.error(err);
     res.status(500).json({ error: "Cleanup failed" });
   }
 };
@@ -172,7 +188,8 @@ const deleteConsultationById = async (req, res) => {
     if (!deleted)
       return res.status(404).json({ message: "Consultation not found" });
     res.json({ message: "Consultation deleted successfully." });
-  } catch {
+  } catch (err) {
+    console.error(err);
     res.status(500).json({ message: "Failed to delete consultation" });
   }
 };
@@ -184,7 +201,8 @@ const clearAllConsultations = async (req, res) => {
       message: "All consultations deleted successfully.",
       deletedCount: result.deletedCount,
     });
-  } catch {
+  } catch (err) {
+    console.error(err);
     res.status(500).json({ message: "Failed to clear consultations" });
   }
 };
@@ -196,7 +214,7 @@ const getConsultationsPaginated = async (req, res) => {
     const skip = (page - 1) * limit;
 
     const [consultations, total] = await Promise.all([
-      Consultation.find().sort({ createdAt: -1 }).skip(skip).limit(limit),
+      Consultation.find().sort({ createdAt: -1 }).skip(skip).limit(limit).lean(),
       Consultation.countDocuments(),
     ]);
 
@@ -206,7 +224,8 @@ const getConsultationsPaginated = async (req, res) => {
       totalPages: Math.ceil(total / limit),
       totalConsultations: total,
     });
-  } catch {
+  } catch (err) {
+    console.error(err);
     res.status(500).json({ message: "Failed to fetch paginated consultations" });
   }
 };
