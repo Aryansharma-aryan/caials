@@ -3,7 +3,6 @@ const router = express.Router();
 
 const {
   createConsultation,
-  
   getAllConsultations,
   markConsultationCompleted,
   pendingBadge,
@@ -15,32 +14,19 @@ const {
 
 const { loginAdmin, verifyAdmin } = require('../controller/AdminController');
 
-// 🔐 Admin login route
+// 🔐 Admin login
 router.post('/admin/login', loginAdmin);
 
-// 💬 Consultation routes
+// 💬 Public consultation submission
 router.post('/consult', createConsultation);
 
-// 🧾 Fetch all consultations (admin-protected)
-router.get('/getConsultation', verifyAdmin, getAllConsultations);
-
-// ✅ Mark consultation as completed
-router.put('/getConsultation/:id/complete', verifyAdmin, markConsultationCompleted);
-
-// 🔢 Pending count
-router.get('/getConsultation/pendingCount', verifyAdmin, pendingBadge);
-
-// 🧹 Cleanup old consultations
-router.get('/getConsultation/cleanupOld', verifyAdmin, cleanupOldConsultations);
-
-// 🆕 New routes below
-// 🔹 Paginated list (20 per page)
-router.get('/getConsultation/paginated/list', verifyAdmin, getConsultationsPaginated);
-
-// 🔹 Delete by ID
-router.delete('/getConsultation/:id', verifyAdmin, deleteConsultationById);
-
-// 🔹 Clear all consultations
-router.delete('/getConsultation', verifyAdmin, clearAllConsultations);
+// 🧾 Admin-protected routes
+router.get('/consultations', verifyAdmin, getAllConsultations);
+router.put('/consultations/:id/complete', verifyAdmin, markConsultationCompleted);
+router.get('/consultations/pendingCount', verifyAdmin, pendingBadge);
+router.patch('/consultations/cleanupOld', verifyAdmin, cleanupOldConsultations);
+router.get('/consultations/paginated', verifyAdmin, getConsultationsPaginated);
+router.delete('/consultations/:id', verifyAdmin, deleteConsultationById);
+router.delete('/consultations', verifyAdmin, clearAllConsultations);
 
 module.exports = router;

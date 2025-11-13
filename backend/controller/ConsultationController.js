@@ -7,9 +7,13 @@ const ADMIN_RECIPIENT = process.env.ADMIN_RECIPIENT || process.env.EMAIL_USER;
 // --- Configure transporter ---
 const transporter = nodemailer.createTransport({
   service: 'gmail',
-  auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS }
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
+  }
 });
 
+// Verify transporter
 transporter.verify()
   .then(() => console.log("✅ Gmail transporter ready"))
   .catch(err => console.error("❌ Transporter verify failed:", err.message));
@@ -34,23 +38,20 @@ function buildConsultationHtml(consult) {
 }
 
 /* ---------------------------------------------------
-   📨 CREATE CONSULTATION + EMAIL (No express-validator)
+   📨 CREATE CONSULTATION + EMAIL
 --------------------------------------------------- */
 const createConsultation = async (req, res) => {
   try {
+    console.log("📥 Request received:", req.body);
+
     let {
-      fullName,
-      email,
-      phone,
-      countryOfInterest,
-      visaType,
-      contactMethod,
-      preferredDate,
-      purpose,
-      message
+      fullName, email, phone,
+      countryOfInterest, visaType,
+      contactMethod, preferredDate,
+      purpose, message
     } = req.body;
 
-    // --- Trim all string inputs ---
+    // Trim all inputs
     fullName = fullName?.trim();
     email = email?.trim();
     phone = phone?.trim();
@@ -61,62 +62,46 @@ const createConsultation = async (req, res) => {
     purpose = purpose?.trim();
     message = message?.trim();
 
-    // --- Minimal Validation ---
+    // Minimal validation
     if (!fullName || !email || !phone || !countryOfInterest || !visaType || !contactMethod) {
       return res.status(400).json({ message: 'Please fill all required fields.' });
     }
-
-    if (!/^[A-Za-z\s.'-]+$/.test(fullName)) {
-      return res.status(400).json({ message: 'Full name contains invalid characters.' });
-    }
-
-    if (!/^\d{7,15}$/.test(phone)) {
-      return res.status(400).json({ message: 'Phone number must be 7-15 digits.' });
-    }
-
-    if (!/.+@.+\..+/.test(email)) {
-      return res.status(400).json({ message: 'Email is invalid.' });
-    }
-
+    if (!/^[A-Za-z\s.'-]+$/.test(fullName)) return res.status(400).json({ message: 'Full name contains invalid characters.' });
+    if (!/^\d{7,15}$/.test(phone)) return res.status(400).json({ message: 'Phone number must be 7-15 digits.' });
+    if (!/.+@.+\..+/.test(email)) return res.status(400).json({ message: 'Email is invalid.' });
     const allowedContactMethods = ['Email', 'Phone', 'WhatsApp'];
-    if (!allowedContactMethods.includes(contactMethod)) {
-      return res.status(400).json({ message: 'Invalid contact method.' });
-    }
+    if (!allowedContactMethods.includes(contactMethod)) return res.status(400).json({ message: 'Invalid contact method.' });
+    if (preferredDate && isNaN(Date.parse(preferredDate))) return res.status(400).json({ message: 'Preferred date is invalid.' });
 
-    // Optional: validate date if provided
-    if (preferredDate && isNaN(Date.parse(preferredDate))) {
-      return res.status(400).json({ message: 'Preferred date is invalid.' });
-    }
-
-    // Create and save consultation
+    // Save consultation to DB
     const newConsultation = new Consultation({
-      fullName,
-      email,
-      phone,
-      countryOfInterest,
-      visaType,
-      contactMethod,
-      preferredDate,
-      purpose,
-      message
+      fullName, email, phone,
+      countryOfInterest, visaType,
+      contactMethod, preferredDate,
+      purpose, message
     });
 
-    await newConsultation.save();
+    const savedConsultation = await newConsultation.save();
+    console.log("💾 Consultation saved:", savedConsultation);
 
     // Send email
     const mailOptions = {
       from: `"CAIALS Consultation" <${process.env.EMAIL_USER}>`,
       to: ADMIN_RECIPIENT,
       subject: `📬 New Consultation from ${fullName}`,
-      html: buildConsultationHtml(newConsultation),
+      html: buildConsultationHtml(savedConsultation),
       replyTo: email
     };
 
-    transporter.sendMail(mailOptions)
-      .then(info => console.log("✅ Email sent:", info.messageId))
-      .catch(err => console.error("❌ Error sending email:", err));
+    try {
+      const info = await transporter.sendMail(mailOptions);
+      console.log("✅ Email sent:", info.messageId);
+    } catch (emailError) {
+      console.error("❌ Error sending email:", emailError);
+    }
 
     res.status(201).json({ message: "Consultation submitted successfully." });
+
   } catch (err) {
     console.error("❌ Error creating consultation:", err);
     res.status(500).json({ message: "Server Error. Please try again later." });
@@ -124,7 +109,7 @@ const createConsultation = async (req, res) => {
 };
 
 /* ---------------------------------------------------
-   🧾 EXISTING CONTROLLERS
+   🧾 GET ALL CONSULTATIONS
 --------------------------------------------------- */
 const getAllConsultations = async (req, res) => {
   try {
@@ -135,6 +120,9 @@ const getAllConsultations = async (req, res) => {
   }
 };
 
+/* ---------------------------------------------------
+   ✅ MARK CONSULTATION COMPLETED
+--------------------------------------------------- */
 const markConsultationCompleted = async (req, res) => {
   const { id } = req.params;
   const { isCompleted } = req.body;
@@ -142,20 +130,26 @@ const markConsultationCompleted = async (req, res) => {
     const consultation = await Consultation.findByIdAndUpdate(id, { isCompleted }, { new: true });
     if (!consultation) return res.status(404).json({ message: 'Consultation not found' });
     res.status(200).json(consultation);
-  } catch {
+  } catch (err) {
     res.status(500).json({ message: 'Server error' });
   }
 };
 
+/* ---------------------------------------------------
+   🟡 PENDING BADGE COUNT
+--------------------------------------------------- */
 const pendingBadge = async (req, res) => {
   try {
     const count = await Consultation.countDocuments({ isCompleted: false });
     res.json({ count });
-  } catch {
+  } catch (err) {
     res.status(500).json({ error: "Failed to get count" });
   }
 };
 
+/* ---------------------------------------------------
+   🧹 CLEANUP OLD CONSULTATIONS
+--------------------------------------------------- */
 const cleanupOldConsultations = async (req, res) => {
   try {
     const result = await Consultation.updateMany(
@@ -163,13 +157,13 @@ const cleanupOldConsultations = async (req, res) => {
       { $set: { isCompleted: false } }
     );
     res.json({ updated: result.modifiedCount });
-  } catch {
+  } catch (err) {
     res.status(500).json({ error: "Cleanup failed" });
   }
 };
 
 /* ---------------------------------------------------
-   🆕 NEW CONTROLLERS (Delete, Clear All, Pagination)
+   ❌ DELETE BY ID
 --------------------------------------------------- */
 const deleteConsultationById = async (req, res) => {
   try {
@@ -182,6 +176,9 @@ const deleteConsultationById = async (req, res) => {
   }
 };
 
+/* ---------------------------------------------------
+   🗑 CLEAR ALL
+--------------------------------------------------- */
 const clearAllConsultations = async (req, res) => {
   try {
     const result = await Consultation.deleteMany({});
@@ -192,6 +189,9 @@ const clearAllConsultations = async (req, res) => {
   }
 };
 
+/* ---------------------------------------------------
+   📄 PAGINATED FETCH
+--------------------------------------------------- */
 const getConsultationsPaginated = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;

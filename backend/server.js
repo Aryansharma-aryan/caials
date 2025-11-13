@@ -4,7 +4,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 
 const connectDB = require('./db/db');
-const consultRoute = require("./routes/consultRoute");
+const consultRoute = require('./routes/consultRoute');
 
 dotenv.config();
 connectDB();
@@ -15,18 +15,16 @@ const PORT = process.env.PORT || 5000;
 // ✅ Allowed origins
 const allowedOrigins = [
   'https://www.caials.com',
-  'https://caials.com' // include both with and without 'www'
+  'https://caials.com',
+  'http://localhost:5173', // local frontend for dev
 ];
 
-// ✅ Allow localhost only in development
-if (process.env.NODE_ENV !== 'production') {
-  allowedOrigins.push('http://localhost:5173');
-}
-
+// ✅ CORS setup
 app.use(cors({
   origin: function (origin, callback) {
-    // Allow requests with no origin (like Postman, curl)
+    // allow requests with no origin (Postman, curl)
     if (!origin) return callback(null, true);
+
     if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
@@ -38,15 +36,18 @@ app.use(cors({
   credentials: true,
 }));
 
+// ✅ Body parser
 app.use(express.json());
 
 // ✅ Routes
-app.use("/api", consultRoute);
+app.use('/api', consultRoute);
 
+// ✅ Health check
 app.get('/', (req, res) => {
   res.send('Consultancy API Running...');
 });
 
+// ✅ Start server
 app.listen(PORT, () => {
   console.log(`✅ Server running on port ${PORT}`);
   console.log(`🌍 Allowed origins: ${allowedOrigins.join(', ')}`);
