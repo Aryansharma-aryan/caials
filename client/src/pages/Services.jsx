@@ -336,7 +336,7 @@ const visaServices = [
           className="text-xl md:text-2xl text-slate-300 max-w-4xl mx-auto leading-relaxed font-light"
         >
           Transform your American dream into reality with our world-class immigration expertise. 
-          <span className="bg-gradient-to-r from-rose-400 to-emerald-400 bg-clip-text text-transparent font-semibold"> 25+ years of proven success</span> and 
+          <span className="bg-gradient-to-r from-rose-400 to-emerald-400 bg-clip-text text-transparent font-semibold"> 13+ years of proven success</span> and 
           <span className="bg-gradient-to-r from-amber-400 to-cyan-400 bg-clip-text text-transparent font-semibold"> exceptional client satisfaction.</span>
         </motion.p>
       </div>
