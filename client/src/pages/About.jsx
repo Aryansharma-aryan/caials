@@ -180,7 +180,7 @@ export default function About() {
             className="inline-block p-2 rounded-2xl bg-gradient-to-r from-blue-600/20 to-purple-600/20 backdrop-blur-sm border border-white/10 mb-8"
           >
             <span className="text-sm font-semibold text-blue-300 px-4 py-2 rounded-xl bg-white/5">
-              ✨ California's Premier Immigration Law Firm
+              ✨ Trusted Immigration & Visa Experts in California
             </span>
           </motion.div>
           
@@ -189,7 +189,7 @@ export default function About() {
           </h1>
           
           <p className="text-xl md:text-2xl text-slate-300 max-w-4xl mx-auto leading-relaxed font-light">
-            Transforming dreams into reality through expert immigration legal services. 
+            Transforming dreams into reality through expert immigration services. 
             <span className="text-blue-300"> Trusted by thousands</span>, 
             <span className="text-purple-300"> proven by results</span>.
           </p>
@@ -290,7 +290,7 @@ export default function About() {
                   
                   <div className="space-y-6 text-slate-300 text-lg leading-relaxed">
                     <p className="font-light">
-                      To provide <span className="text-blue-300 font-medium">exceptional immigration legal services</span> that transform lives and build bridges between dreams and reality. We believe every person deserves the opportunity to achieve their American dream through expert guidance, compassionate support, and unwavering dedication.
+                      To provide <span className="text-blue-300 font-medium">exceptional immigration services</span> that transform lives and build bridges between dreams and reality. We believe every person deserves the opportunity to achieve their American dream through expert guidance, compassionate support, and unwavering dedication.
                     </p>
                     <p className="font-light">
                       Since <span className="text-purple-300 font-medium">2013</span>, we've been committed to delivering personalized, results-driven immigration solutions that exceed expectations and create lasting positive impact in our clients' lives.
@@ -311,7 +311,7 @@ export default function About() {
                     <h3 className="text-2xl font-bold text-blue-300">Our Vision</h3>
                   </div>
                   <p className="text-slate-300 leading-relaxed">
-                    To be the most trusted immigration law firm in California, known for our integrity, expertise, and transformative client success stories.
+                    To be the most trusted immigration services in California, known for our integrity, expertise, and transformative client success stories.
                   </p>
                 </div>
                 
@@ -350,7 +350,7 @@ export default function About() {
             </h2>
             
             <p className="text-slate-400 text-xl max-w-4xl mx-auto leading-relaxed">
-              Discover what sets us apart as California's leading immigration law firm and why thousands of clients trust us with their most important legal matters.
+              Discover what sets us apart as California's leading immigration services and why thousands of clients trust us.
             </p>
           </motion.div>
 
