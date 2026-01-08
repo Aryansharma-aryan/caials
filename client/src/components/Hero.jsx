@@ -98,7 +98,7 @@ export default function Hero() {
                 2000,
                 "Work Opportunities.",
                 2000,
-                "Legal Guidance.",
+                "Your Global Future.",
                 2000,
               ]}
               speed={50}
@@ -114,8 +114,8 @@ export default function Hero() {
               Trusted advisors helping you immigrate, study, or work abroad.
             </span>{" "}
             Turn your international dream into reality with{" "}
-            <span className="text-red-400 font-semibold">unmatched guidance</span> and{" "}
-            <span className="text-red-400 font-semibold">legal support</span>.
+            <span className="text-red-400 font-semibold">expert guidance</span> at{" "}
+            <span className="text-red-400 font-semibold">every step</span>.
           </p>
 
           <div className="mt-17 flex flex-wrap gap-4">
