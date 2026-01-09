@@ -14,7 +14,7 @@ const whyChooseUs = [
   {
     icon: "🎯",
     title: "Proven Expertise",
-    description: "13+ years of specialized immigration law experience with deep knowledge of USCIS procedures and requirements.",
+    description: "13+ years of specialized immigration services experience with deep knowledge of USCIS procedures and requirements.",
     gradient: "from-amber-500/20 to-orange-500/20"
   },
   {
@@ -53,12 +53,7 @@ const whyChooseUs = [
     description: "No hidden fees. Clear, upfront pricing with flexible payment plans available for all services.",
     gradient: "from-green-500/20 to-emerald-500/20"
   },
-  {
-    icon: "🎓",
-    title: "Certified Professionals",
-    description: "Our team includes licensed attorneys, certified consultants, and USCIS-accredited representatives.",
-    gradient: "from-indigo-500/20 to-blue-500/20"
-  },
+ 
   {
     icon: "📊",
     title: "Real-Time Updates",
