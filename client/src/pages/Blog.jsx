@@ -54,18 +54,7 @@ const Blog = () => {
       readTime: "10 min read",
       featured: false
     },
-    {
-      id: 5,
-      title: "Employment-Based Green Cards: EB-1, EB-2, and EB-3 Categories",
-      excerpt: "Comprehensive overview of employment-based green card categories and how to determine which category fits your qualifications.",
-      content: "Employment-based immigration offers multiple pathways for skilled workers...",
-      author: "Immigration Attorney",
-      date: "2024-12-28",
-      category: "Green Cards",
-      image: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=600&h=400&fit=crop",
-      readTime: "15 min read",
-      featured: false
-    },
+    
     {
       id: 6,
       title: "Tourist and Visitor Visas: B-1/B-2 Application Guide",
