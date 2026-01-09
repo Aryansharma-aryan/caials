@@ -162,26 +162,7 @@ const visaServices = [
     icon: "⛪",
     gradient: "from-purple-400 to-violet-500"
   },
-  {
-    title: "Divorce Proceedings",
-    category: "Family Law Services",
-    description: "Compassionate legal support for divorce proceedings with attention to immigration status implications and family welfare.",
-    detailedDescription: "Our divorce services provide sensitive and comprehensive legal support for individuals navigating the dissolution of marriage, particularly when immigration status is involved. We understand the unique challenges faced by immigrants during divorce proceedings, including concerns about conditional permanent residence, VAWA self-petitions, and the impact on pending immigration applications. Our team provides guidance on property division, child custody arrangements, spousal support, and the protection of immigration benefits. We work closely with family law attorneys and immigration specialists to ensure all aspects of your case are properly addressed, including the preparation of joint petitions to remove conditions on residence before divorce finalization.",
-    features: [
-      "Divorce petition filing and processing",
-      "Immigration status protection strategies",
-      "VAWA self-petition assistance",
-      "Conditional residence issues",
-      "Property division guidance",
-      "Child custody arrangements",
-      "Spousal support negotiations",
-      "Collaborative legal approach"
-    ],
-    processingTime: "6-18 months",
-    successRate: "88%",
-    icon: "⚖️",
-    gradient: "from-gray-400 to-slate-500"
-  },
+ 
   {
     title: "Various Immigration Services",
     category: "Comprehensive Immigration",
