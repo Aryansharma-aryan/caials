@@ -54,28 +54,7 @@ const Contact = () => {
     }
   ];
 
-  const features = [
-    {
-      icon: <Shield className="w-8 h-8" />,
-      title: "Registered & Bonded",
-      description: "Licensed immigration consultants ensuring secure handling of your case"
-    },
-    {
-      icon: <Award className="w-8 h-8" />,
-      title: "Expert Consultants",
-      description: "Highly qualified team with extensive immigration law experience"
-    },
-    {
-      icon: <Globe className="w-8 h-8" />,
-      title: "Global Services",
-      description: "Comprehensive immigration services for individuals and corporations"
-    },
-    {
-      icon: <FileText className="w-8 h-8" />,
-      title: "Complete Documentation",
-      description: "End-to-end assistance with accurate paperwork and USCIS filing"
-    }
-  ];
+  
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
@@ -280,20 +259,7 @@ const Contact = () => {
           ))}
         </div>
 
-        {/* Features Section */}
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {features.map((feature, index) => (
-            <div key={index} className="text-center p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group">
-              <div className="w-16 h-16 bg-gradient-to-r from-blue-100 to-purple-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                <div className="text-blue-600">
-                  {feature.icon}
-                </div>
-              </div>
-              <h3 className="font-bold text-gray-800 mb-2">{feature.title}</h3>
-              <p className="text-gray-600 text-sm leading-relaxed">{feature.description}</p>
-            </div>
-          ))}
-        </div>
+       
 
         {/* Enhanced Contact Banner */}
         <div className="mt-16 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 rounded-2xl shadow-2xl overflow-hidden">
