@@ -340,7 +340,6 @@ const PremiumFooter = () => {
             <p className="text-blue-300 text-xs text-center">
               <strong>Disclaimer:</strong> California Immigration Services is not a law firm. We are registered and bonded immigration consultants. 
               We specialize in the preparation of Immigration and Naturalization paperwork and documents. 
-              Complex legal matters may require consultation with an immigration attorney.
             </p>
           </div>
         </div>
