@@ -25,7 +25,7 @@ const visaServices = [
   {
     title: "Green Card Petition",
     category: "Permanent Immigration",
-    description: "Expert guidance through employment-based and family-based permanent residency processes with comprehensive legal support.",
+description: "Expert guidance through employment-based and family-based permanent residency processes with complete application and documentation support.",
     detailedDescription: "Our green card petition services encompass all categories of permanent residency applications. For employment-based cases, we handle PERM Labor Certifications, National Interest Waivers, and extraordinary ability petitions. We guide you through the three-step process: labor certification (if required), I-140 immigrant petition, and adjustment of status or consular processing. Our team has extensive experience with priority date tracking, handling RFEs, and navigating complex immigration law changes. We also assist with family-based green cards, diversity visa applications, and special immigrant categories including religious workers and international broadcasters.",
     features: [
       "PERM Labor Certification",
@@ -164,20 +164,23 @@ const visaServices = [
   },
  
   {
-    title: "Various Immigration Services",
-    category: "Comprehensive Immigration",
-    description: "Wide range of specialized immigration services including waivers, appeals, deportation defense, and complex case solutions.",
-    detailedDescription: "Our comprehensive immigration services cover a broad spectrum of specialized cases and complex immigration matters. This includes inadmissibility waivers for various grounds such as unlawful presence, criminal convictions, and health-related issues. We handle immigration appeals before the Board of Immigration Appeals (BIA), federal court litigation, and deportation defense proceedings. Our team provides expertise in humanitarian cases including asylum, withholding of removal, and Convention Against Torture claims. We also assist with immigration consequences of criminal convictions, post-conviction relief, and complex family reunification cases involving multiple jurisdictions and legal challenges.",
-    features: [
-      "Inadmissibility waivers (I-601/I-601A)",
-      "Immigration appeals and litigation",
-      "Deportation defense representation",
-      "Asylum and refugee cases",
-      "Criminal immigration consequences",
-      "Post-conviction relief coordination",
-      "Humanitarian parole applications",
-      "Complex multi-jurisdictional cases"
-    ],
+   title: "Various Immigration Services",
+category: "Comprehensive Immigration",
+description: "Wide range of specialized immigration services including waivers, appeals assistance, case support, and complex application solutions.",
+
+detailedDescription: "Our comprehensive immigration services cover a broad range of specialized and complex immigration cases. This includes assistance with inadmissibility waivers for various grounds such as unlawful presence and other eligibility issues. We also provide support with appeal processes, case follow-ups, and removal-related case assistance. Our team helps with humanitarian applications including asylum-related filings and protection-based requests. We guide clients through immigration situations affected by past records, coordinate required documentation, and support complex family reunification cases involving multiple countries and procedures.",
+
+features: [
+  "Inadmissibility waivers (I-601/I-601A) assistance",
+  "Appeals filing and case follow-up support",
+  "Removal-related case assistance",
+  "Humanitarian and protection-based applications",
+  "Case guidance for record-related immigration issues",
+  "Documentation coordination and referrals if needed",
+  "Humanitarian parole application support",
+  "Complex multi-country case handling"
+],
+
     processingTime: "Varies by case",
     successRate: "85%",
     icon: "🛡️",
