@@ -295,7 +295,6 @@ const PremiumFooter = () => {
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="mb-4 md:mb-0">
               <h4 className="text-xl font-bold text-white mb-2">Stay Updated on Immigration News</h4>
-              <p className="text-blue-200">Get the latest updates on immigration laws and policies</p>
             </div>
             <div className="flex w-full md:w-auto">
               <input
