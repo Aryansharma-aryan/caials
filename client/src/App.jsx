@@ -7,7 +7,6 @@ import ConsultancyForm from './Forms/ConsultancyForm';
 import AdminPanel from "./Admin/AdminPanel";
 import AdminLogin from "./components/adminLogin";
 import ProtectedRoute from './components/ProtectedRoute';
-import PremiumFooter from "./pages/PremiumFooter"
 import Contact from "./pages/Contact";
 import About from "./pages/About";
 import Services from "./pages/Services";
@@ -48,7 +47,6 @@ function App() {
           }
         />
       </Routes>
-      <PremiumFooter/>
     </BrowserRouter>
   );
 }
